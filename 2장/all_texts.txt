@@ -1,0 +1,1059 @@
+===SLIDE 1===
+T|CHAPTER 2
+T|Python for machine learning
+T|Python for Machine Learning
+T|Python language history, basic grammar, data structure, function/class design, performance optimization, development environment
+T|Machine learning | Machine Learning
+===SLIDE 2===
+T|Table of Contents (Table of Contents) ||| GIL) || |
+T|Chapter 2 전체 구성
+T|Part I: 이론
+T|2.1  왜 Python인가
+T|2.2  기초 문법 (변수, 연산자, 제어문)
+T|2.3  자료구조 심화 (list, tuple, dict, set)
+T|2.4  함수와 클래스 (sklearn 패턴)
+T|2.5  성능 최적화 (프로파일링, 벡터화, GIL)
+T|2.6  개발환경 (conda, Jupyter, IDE)
+T|Part II: 실습 & 논문
+T|2.7   논문 리뷰 (5편)
+T|2.8   실습: Python 프로파일링
+T|2.9   실습: 자료구조 벤치마크
+T|2.10  실습: 함수형 프로그래밍 ML
+T|2.11  End-to-end ML 파이프라인
+T|2.12  핵심 요약 + 복습 질문
+===SLIDE 3===
+T|Learning Objectives
+T|Things you can do after completing this chapter
+T|1. Can explain the historical background of Python becoming a standard ML language
+T|2. You can use basic grammar such as variables, data types, operators, and control statements
+T|3. You can compare the time complexity of list, tuple, dict, and set and select appropriately
+T|4. Can implement functions, classes, and sklearn's fit/predict/transform patterns
+T|5. Performance optimization techniques such as NumPy vectorization, profiling, and GIL bypass can be applied
+T|6. You can build conda/venv virtual environment and Jupyter Notebook environment
+T|7. You can implement an end-to-end ML pipeline using only pure Python.
+===SLIDE 4===
+T|SECTION 1
+T|Why Python
+T|History and reasons for the ML standard language
+===SLIDE 5===
+T|SECTION 1
+T|History of becoming a ML standard language
+T|Milestones from 1991 to present
+T|Year
+T|Milestone
+T|Significance
+T|1991
+T|Python 0.9 released
+T|van Rossum's 'batteries included' philosophy
+T|2001
+T|SciPy project start
+T|Seed of scientific computing ecosystem
+T|2006
+T|NumPy 1.0 (Oliphant)
+T|High-performance ndarray - core infrastructure of ML
+T|2007
+T|IPython Announcement ||| Survey
+T|Overview of the entire Python ML ecosystem
+T|2010
+T|scikit-learn 0.1 공개
+T|일관된 fit/predict/transform API
+T|2014
+T|Jupyter Notebook 분리
+T|언어 독립적 리터릿 컴퓨팅 플랫폼
+T|2015
+T|TensorFlow 공개
+T|딥러닝 프레임워크 시대 개막
+T|2016
+T|PyTorch 공개
+T|동적 계산 그래프, 연구 친화적
+T|2020
+T|Raschka et al. 서베이
+T|파이썬 ML 생태계 전체 조망
+===SLIDE 6===
+T|SECTION 1
+T|3 reasons why Python became the ML standard
+T|1. Glue Language || Rich ecosystem
+T|Supports all stages of ML pipeline
+T|Data collection → preprocessing → modeling → distribution
+T|3. Low barrier to entry
+T|Dynamic typing, concise grammar
+T|Indentation-based block structure
+T|NumPy, Pandas, scikit-learn
+T|TensorFlow, PyTorch, matplotlib
+T|Quick learning even for non-majors
+T|TIOBE Index 1st place (2024~)
+T|3. 낮은 진입 장벽
+T|동적 타이핑, 간결한 문법
+T|들여쓰기 기반 블록 구조
+T|비전공자도 빠르게 학습 가능
+T|TIOBE 인덱스 1위 (2024~)
+===SLIDE 7===
+T|SECTION 1
+T|Python vs R vs Julia vs MATLAB
+T|Comparison of each language's strengths and ML suitability
+T|Criteria
+T|Python
+T|R
+T|Julia
+T|MATLAB
+T|Main areas
+T|General-purpose+ML/DL
+T|Statistical analysis
+T|High-performance numerical value
+T|Engineering simulation
+T|Performance
+T|Medium (NumPy supplement)
+T|Slow (Rcpp supplement)
+T|Fast (C level)
+T|Medium
+T|DL Framework
+T|TF, PyTorch
+T|Limited || | | Limited | High
+T|Flux.jl
+T|Medium
+T|Low
+T|Medium
+T|Key: No language beats Python for the breadth of its ecosystem, covering the entire ML pipeline in one language.
+T|성장 중
+T|학교/기업 중심
+T|라이선스
+T|오픈소스(무료)
+T|오픈소스(무료)
+T|오픈소스(무료)
+T|상용(유료)
+T|산업 채택
+T|매우 높음
+T|중간
+T|낮음
+T|중간
+T|핵심: ML 전체 파이프라인을 하나의 언어로 커버하는 생태계의 폭에서 파이썬을 능가하는 언어는 없다
+===SLIDE 8===
+T|SECTION 1
+T|Python design philosophy: The Zen of Python |||
+T|import this
+T|import this
+T|# Beautiful is better than ugly.
+T|#   → 가독성 최우선
+T|# Explicit is better than implicit.
+T|#   → 명시적 코드 선호
+T|# Simple is better than complex.
+T|#   → 단순한 해법 추구
+T|# There should be one obvious way to do it.
+T|#   → 일관된 API 설계
+T|scikit-learn에 반영된 철학
+T|fit() → 학습
+T|predict() → 예측
+T|transform() → 변환
+T|일관된 API = 'one obvious way'
+T|모든 모델이 동일 패턴 따름
+===SLIDE 9===
+T|SECTION 2
+T|Basic grammar
+T|Variables, data types, operators, control statements
+===SLIDE 10===
+T|SECTION 2
+T|Variables and Dynamic Typing
+T|Automatically determined based on value without data type declaration
+T|# Variable assignment - no data type declaration required
+T|x = 42          # int
+T|y = 3.14        # float
+T|name = 'ML'     # str
+T|is_valid = True  # bool
+T|# Dynamic typing: Reassignment of a different type to the same variable
+T|x = 'Now string' # Change from int → str
+T|print(type(x))     # <class 'str'>
+T|ML variable naming convention
+T|data || |
+T|X_train / X_test = 분할된 데이터
+T|n_samples, n_features = 데이터 차원
+T|주의: 정적 vs 동적 타이핑
+T|정적(C, Java): 컴파일 시 타입 오류 발견 → 안전
+T|동적(Python): 런타임 시 타입 오류 발견 → 유연
+===SLIDE 11===
+T|SECTION 2
+T|Data types and arithmetic operators
+T|4 basic data types + 7 operators
+T|Data type
+T|Notation
+T|Example
+T|ML context
+T|Integer
+T|int
+T|42
+T|Class label, index
+T|Real number
+T|float
+T|3.14
+T|Feature value, weight, loss
+T|String
+T|str
+T|'hello'
+T|Categorical feature, text
+T|Logical type
+T|bool
+T|True/False
+T|Mask, condition Filter
+T|Operator |
+T|의미
+T|예시
+T|결과
+T|+
+T|덧셈
+T|3 + 2
+T|5
+T|-
+T|뺄셈
+T|3 - 2
+T|1
+T|*
+T|곱셈
+T|3 * 2
+T|6
+T|/
+T|나눗셈
+T|7 / 2
+T|3.5 (항상 float)
+T|//
+T|몫
+T|7 // 2
+T|3
+T|%
+T|나머지
+T|7 % 2
+T|1
+T|**
+T|거듭제곱
+T|3 ** 2
+T|9
+===SLIDE 12===
+T|SECTION 2
+T|Impact of float precision on ML
+T|IEEE 754 Floating Point Limits and Dealing with them
+T|# IEEE 754 Floating Point Limitations
+T|print(0.1 + 0.2)         # 0.30000000000000004
+T|print(0.1 + 0.2 == 0.3)  # False !!
+T|# How to Compare Correctly
+T|import math
+T|print(math.isclose(0.1 + 0.2, 0.3))  # True
+T|Why Precision is Important in ML
+T|float32 Precision ≈ 10⁻⁷
+T|float64 Precision ≈ 10⁻¹⁶
+T|Gradient descent: Vanishing gradient in float32 when η=10⁻⁶
+T|Loss function: If p→0 in log(p), -∞ divergence
+T|→ Requires np.clip(p, 1e-15, 1)
+T|Mixed precision: GPU optimization with float16 + float32
+T|Formula: float32 precision ≈ 10⁻⁷, float64 precision ≈ 10⁻¹⁶
+===SLIDE 13===
+T|SECTION 2
+T|Conditional statements and loops
+T|if-elif-else, for, while, enumerate
+T|# Conditional statement: if-elif-else
+T|score = 85
+T|if score >= 90:
+T|    grade = 'A'
+T|elif score >= 80:
+T|    grade = 'B'
+T|else:
+T|    grade = 'C'
+T|# for loop
+T|for i in range(5):
+T|    print(i, end=' ')  # 0 1 2 3 4
+T|# enumerate: Index + value simultaneously
+T|fruits = ['apple', 'banana', 'cherry']
+T|for idx, fruit in enumerate(fruits):
+T|    print(f'{idx}: {fruit}')
+T|# f-string: Frequently used output patterns in ML
+T|epoch, loss, acc = 10, 0.0342, 0.9821
+T|print(f'Epoch {epoch:3d} | Loss: {loss:.4f}'
+T|      f' | Acc: {acc:.4f}')
+T|# Epoch  10 | Loss: 0.0342 | Acc: 0.9821
+T|f-string formatting
+T|:3d = 3-digit integer, :.4f = decimal point 4 digits
+T|:.2% = percentage display (0.95 → 95.00%)
+===SLIDE 14===
+T|SECTION 2
+T|List Comprehension
+T|Python's unique syntax that reduces the for statement to one line
+T|# Basic: [expression for variable in iterable]
+T|squares = [x ** 2 for x in range(1, 6)]       # [1, 4, 9, 16, 25]
+T|# Condition included: [Expression for variable in iterable if condition]
+T|evens = [x for x in range(1, 21) if x % 2 == 0]  # [2, 4, ..., 20]
+T|# If-else included: [Expression1 if condition else Expression2 for variable in iterable]
+T|labels = [1 if x > 0 else 0 for x in [-1, 3, -2, 5, 0]]  # [0, 1, 0, 1, 0]
+T|# ML usage example
+T|# Data preprocessing: Missing values Remove
+T|cleaned = [x for x in raw_data if x is not None]
+T|# Label Encoding
+T|encoded = [1 if label == 'positive' else 0 for label in labels]
+T|ML Core Uses: Very often used in data preprocessing, feature extraction, label encoding
+===SLIDE 15===
+T|SECTION 3
+T|Advanced Data Structure
+T|Characteristics and time complexity of list, tuple, dict, and set
+===SLIDE 16===
+T|SECTION 3
+T|Comparison of four basic data structures ||| O(1). Overwhelming compared to list's O(n) in large data
+T|특성과 용도
+T|자료구조
+T|기호
+T|변경 가능
+T|순서 보장
+T|중복 허용
+T|해시 기반
+T|리스트 (list)
+T|[ ]
+T|O (mutable)
+T|O
+T|O
+T|X
+T|튜플 (tuple)
+T|( )
+T|X (immutable)
+T|O
+T|O
+T|X
+T|딕셔너리 (dict)
+T|{ }
+T|O (mutable)
+T|O (3.7+)
+T|키 X
+T|O
+T|세트 (set)
+T|{ }
+T|O (mutable)
+T|X
+T|X
+T|O
+T|핵심: dict와 set은 해시 테이블 기반이므로 탐색이 O(1). 대용량 데이터에서 list의 O(n) 대비 압도적
+===SLIDE 17===
+T|SECTION 3
+T|Time complexity comparison (Big-O) ||
+T|연산별 성능 특성
+T|연산
+T|list
+T|tuple
+T|dict
+T|set
+T|인덱스 접근 [i]
+T|O(1)
+T|O(1)
+T|O(1)
+T|N/A
+T|탐색 (in)
+T|O(n)
+T|O(n)
+T|O(1)
+T|O(1)
+T|끝 삽입
+T|O(1)*
+T|N/A
+T|O(1)
+T|O(1)
+T|앞 삽입
+T|O(n)
+T|N/A
+T|N/A
+T|N/A
+T|끝 삭제
+T|O(1)
+T|N/A
+T|O(1)
+T|O(1)
+T|앞 삭제
+T|O(n)
+T|N/A
+T|N/A
+T|N/A
+T|*O(1) 분할상환(amortized): 리스트 용량 초과 시 내부적으로 배열을 2배 확장
+===SLIDE 18===
+T|SECTION 3
+T|list details
+T|variable, guaranteed order, indexing/slicing
+T|# Creation and indexing
+T|data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+T|print(data[0]) # 1 (first)
+T|print(data[-1]) # 10 (last)
+T|# slicing: [start:end:interval]
+T|print(data[2:5])   # [3, 4, 5]
+T|print(data[::2])   # [1, 3, 5, 7, 9]
+T|print(data[::-1]) # [10, 9, ..., 1] Reverse order
+T|# Main method
+T|data.append(100) # Append to the end O(1)
+T|data.insert(0, 99) # Insert before O(n)
+T|data.remove(100) # Delete by value O(n)
+T|removed = data.pop() # Remove from the end O(1)
+T|Slicing rule
+T|[start:end] → end index Not included
+T|[::interval] → Skip by interval
+T|[::-1] → Reverse order (reverse entire order)
+T|Often used in ML:
+T|  X_train = data[:split]
+T|  X_test = data[split:]
+T|Performance caution
+T|append → O(1), insert(0) → O(n)
+T|Use collections.deque if front insertion is frequent.
+===SLIDE 19===
+T|SECTION 3
+T|Dictionary (dict) & set (set)
+T|O(1) search based on hash table
+T|# Dictionary: {key: value}
+T|params = {
+T|    'n_estimators': 100,
+T|    'max_depth': 5,
+T|    'learning_rate': 0.1,
+T|}
+T|# model = dict (pass **kwargs)
+T|Mapping category labels → dict (string → integer encoding)
+T|train_feats = {'age', 'income', 'score'}
+T|test_feats = {'age', 'income', 'name'}
+T|missing = train_feats - test_feats  # {'score'}
+T|Extract unique categories → set (remove duplicates, O(1) search)
+T|Model settings (immutable) → tuple (avoid accidental changes)
+T|Fast membership check → set / dict
+T|범주 레이블 매핑 → dict (문자열→정수 인코딩)
+T|고유 카테고리 추출 → set (중복 제거, O(1) 탐색)
+T|모델 설정 (불변) → tuple (실수 변경 방지)
+T|빠른 멤버십 검사 → set / dict
+===SLIDE 20===
+T|SECTION 4
+T|Functions and classes
+T|def, lambda, classes, sklearn patterns
+===SLIDE 21===
+T|SECTION 4
+T|Function Definitions and Advanced Features
+T|Default, *args, **kwargs, multiple returns
+T|# Default Parameters
+T|def train(data, epochs=10, lr=0.01):
+T|print(f'train: {epochs} epochs, learning rate={lr}')
+T|train(data) # Use defaults
+T|train(data, epochs=50) # Only change epochs
+T|# *args: Variable positional arguments (tuple)
+T|def add_all(*args):
+T|    return sum(args)
+T|# **kwargs: Variable keyword arguments (dictionary)
+T|def create_model(**kwargs):
+T|    for key, val in kwargs.items():
+T|        print(f'  {key} = {val}')
+T|Multiple value returns (tuple)
+T|def calc_stats(numbers):
+T|    total = sum(numbers)
+T|    avg = total / len(numbers)
+T|    return total, avg, min(numbers)
+T|total, avg, min_v = calc_stats([85,90,78])
+T|Using **kwargs in ML
+T|params = {'n_estimators':100, 'max_depth':5}
+T|model = RandomForestClassifier(**params)
+===SLIDE 22===
+T|SECTION 4
+T|lambda functions and higher-order functions
+T|Used in sorted, map, filter
+T|# lambda: Anonymous function (one-line function)
+T|square = lambda x: x ** 2
+T|print(square(5))  # 25
+T|# sorted() + lambda: Sort feature importance
+T|feature_importance = [('age', 0.35), ('income', 0.52), ('score', 0.13)]
+T|sorted_features = sorted(feature_importance, key=lambda x: x[1], reverse=True)
+T|# [('income', 0.52), ('age', 0.35), ('score', 0.13)]
+T|# map(): Data conversion |  filter(): data filtering
+T|data = [1, -2, 3, -4, 5]
+T|positives = list(filter(lambda x: x > 0, data))   # [1, 3, 5]
+T|squared = list(map(lambda x: x ** 2, data))        # [1, 4, 9, 16, 25]
+===SLIDE 23===
+T|SECTION 4
+T|sklearn's fit/predict/transform patterns
+T|Estimator API - consistent interface for all models
+T|class SimpleScaler:
+T|    def __init__(self, feature_range=(0, 1)):
+T|        self.feature_range = feature_range
+T|        self.min_ = None
+T|        self.max_ = None
+T|def fit(self, X): # Learn statistics from training data
+T|        self.min_ = min(X)
+T|        self.max_ = max(X)
+T|        return self
+T|def transform(self, (Convenience)
+T|        range_ = self.max_ - self.min_
+T|        lo, hi = self.feature_range
+T|        return [(x-self.min_)/range_*(hi-lo)+lo
+T|                for x in X]
+T|Important: fit() must only be used on training data!
+T|Calling fit() on test data = data leakage
+T|호출 시점
+T|fit(X)
+T|학습 데이터에서 파라미터 학습
+T|학습 시
+T|predict(X)
+T|학습된 모델로 예측 수행
+T|추론 시
+T|transform(X)
+T|학습된 파라미터로 데이터 변환
+T|학습/추론 시
+T|fit_transform(X)
+T|fit + transform 한 번에
+T|학습 시 (편의)
+T|중요: fit()은 반드시 학습 데이터에서만!
+T|테스트 데이터에 fit() 호출 = 데이터 누출(data leakage)
+===SLIDE 24===
+T|SECTION 4
+T|Class inheritance and polymorphism |||  All support fit() → predict() → score()
+T|BaseModel → 구체적 모델 구현 패턴
+T|# 기본 모델 클래스 (추상 기반)
+T|class BaseModel:
+T|    def fit(self, X, y):
+T|        raise NotImplementedError
+T|    def predict(self, X):
+T|        raise NotImplementedError
+T|    def score(self, X, y):
+T|        preds = self.predict(X)
+T|        correct = sum(1 for p,t
+T|                      in zip(preds,y) if p==t)
+T|        return correct / len(y)
+T|# 구체적 모델 구현
+T|class MajorityClassifier(BaseModel):
+T|    def fit(self, X, y):
+T|        from collections import Counter
+T|        self.majority_ = Counter(y)
+T|            .most_common(1)[0][0]
+T|        return self
+T|다형성 (Polymorphism)의 장점
+T|동일한 인터페이스로 다른 모델 사용 가능
+T|model = MajorityClassifier()
+T|model.fit(None, [0,0,1,0,1,0])
+T|model.predict([1,2,3])  # [0, 0, 0]
+T|model.score(None, [0,0,1])  # 0.667
+T|sklearn의 모든 모델이 이 패턴:
+T|  LogisticRegression, SVC, RandomForest...
+T|  모두 fit() → predict() → score() 지원
+===SLIDE 25===
+T|SECTION 5
+T|Performance optimization
+T|Profiling, vectorization, GIL, memory management
+===SLIDE 26===
+T|SECTION 5
+T|Profiling: Finding bottlenecks
+T|Don't optimize if you don't measure it
+T|import time, cProfile
+T|# Method 1: time.perf_counter()
+T|start = time.perf_counter()
+T|result = sum(x**2 for x in range(1_000_000))
+T|elapsed = time.perf_counter() - start
+T|print(f'Running time: {elapsed:.4f} seconds')
+T|# Method 2: cProfile (details per function)
+T|def my_function():
+T|    data = [x**2 for x in range(100_000)]
+T|    return sorted(data, reverse=True)
+T|cProfile.run('my_function()')
+T|# Method 3: Jupyter %timeit
+T|# %timeit sum(range(1000))
+T|Profiling Step 3
+T|Step 1: time.perf_counter()
+T|→ Simple section measurement
+T|→ Identify bottlenecks as quickly as possible
+T|Step 2: cProfile
+T|→ Number of calls per function, cumulative time
+T|→ In-depth analysis of which functions are slow
+T|Step 3: line_profiler
+T|→ Line-by-line execution time analysis
+T|→ Identify the exact bottleneck point
+===SLIDE 27===
+T|SECTION 5
+T|Vectorization: The power of NumPy
+T|Dozens to hundreds of times faster than pure Python loops
+T|import numpy as np
+T|n = 1_000_000
+T|data_list = list(range(n))
+T|data_array = np.arange(n)
+T|# Pure Python loop: ~0.15 seconds
+T|result_loop = [x ** 2 for x in data_list]
+T|# NumPy vectorization: ~0.002 seconds (about 75 times faster!)
+T|result_numpy = data_array ** 2
+T|3 reasons why vectorization is fast
+T|1. C-level inner loop: eliminate interpreter overhead
+T|2. Continuous memory access: Maximizing CPU cache efficiency
+T|3. SIMD Instructions: Hardware-Level Parallelism
+T|Speed ​​Comparison
+T|for loop     ~150ms
+T|list comp.   ~100ms
+T|map()        ~120ms
+T|NumPy         ~2ms
+T|NumPy is ~75x faster than for loops
+T|Key Lessons:
+T|Be sure to use NumPy for numerical calculations!
+T|In pure Python, comprehension is optimal.
+===SLIDE 28===
+T|SECTION 5
+T|GIL (Global Interpreter Lock)
+T|CPython's global locking and its response in ML
+T|What is GIL?
+T|CPython's global locking mechanism
+T|Only one thread executes Python bytecode at a time
+T|CPU bound: Performance cannot be improved by multithreading
+T|I/O bound: Multithreading has an effect (GIL is turned off)
+T|Strategy
+T|Tools
+T|Application Situation
+T|Multiprocessing
+T|multiprocessing, joblib
+T|CPU parallel learning
+T|NumPy internal
+T|BLAS/MKL
+T|Matrix computation automatically parallel
+T|External library
+T|TensorFlow, PyTorch
+T|GPU computation (GIL independent)
+T|Asynchronous I/O
+T|asyncio
+T|Data loading pipeline
+T|# scikit-learn's n_jobs parameter
+T|# Multiprocessing used internally
+T|from sklearn.ensemble import RandomForestClassifier
+T|model = RandomForestClassifier(
+T|n_estimators=100, n_jobs=-1 # All cores
+T|)
+===SLIDE 29===
+T|SECTION 5
+T|Memory Management ||| Efficient
+T|dict: ~300+ KB → Hash table overhead
+T|import sys
+T|set: ~500+ KB → Hash table overhead
+T|list_mem  = sys.getsizeof(list(range(10000)))
+T|tuple_mem = sys.getsizeof(tuple(range(10000)))
+T|dict_mem  = sys.getsizeof({i:i for i in range(10000)})
+T|Large data processing strategy:
+T|gen = (x ** 2 for x in range(1_000_000))
+T|print(sys.getsizeof(gen))  # ~200 bytes!
+T|1. Generator batch loading (yield)
+T|2. np.memmap (disk mapping array)
+T|4. float64 → float32 downcasting
+T|tuple: ~80 KB → immutable, 메모리 효율적
+T|dict: ~300+ KB → 해시 테이블 오버헤드
+T|set: ~500+ KB → 해시 테이블 오버헤드
+T|대용량 데이터 처리 전략:
+T|  1. 제너레이터 배치 로딩 (yield)
+T|  2. np.memmap (디스크 매핑 배열)
+T|  3. pd.read_csv(chunksize=1000)
+T|  4. float64 → float32 다운캐스팅
+===SLIDE 30===
+T|SECTION 6
+T|Development environment
+T|Virtual environment, Jupyter, IDE, debugging
+===SLIDE 31===
+T|SECTION 6
+T|Virtual environment: conda vs venv
+T|Build independent environment for each project
+T|# venv (built-in Python)
+T|python -m venv ml_env
+T|source ml_env/bin/activate     # Linux/Mac
+T|ml_env\Scripts\activate      # Windows
+T|pip install numpy pandas scikit-learn
+T|# conda (Anaconda/Miniconda)
+T|conda create -n ml_env python=3.11
+T|conda activate ml_env
+T|conda install numpy pandas scikit-learn
+T|Standard
+T|venv + pip
+T|conda
+T|Package source
+T|PyPI
+T|Anaconda + PyPI
+T|Binary management
+T|Limited
+T|Excellent (C dependency automatic)
+T|GPU settings
+T|Manual
+T|Simple (cudatoolkit)
+T|Recommended
+T|Lightweight Project
+T|ML/DL Project
+===SLIDE 32===
+T|SECTION 6
+T|Jupyter Notebook vs IDE
+T|Exploratory analysis vs production code
+T|Jupyter Notebook
+T|Strengths: Cell-by-cell execution, inline visualization, markdown
+T|Suitable for: EDA, prototyping, lectures/presentations
+T|Magic: %timeit, %matplotlib inline
+T|Limitations: .ipynb JSON format → Git diff inconvenient
+T|IDE (VS Code, PyCharm)
+T|Strengths: Debugging, refactoring, autocompletion, Git integration
+T|Suitable for: Production code, packages Development ||| == len(y), 'X and y have different lengths!'
+T|.py 파일 → Git 친화적
+T|VS Code + Jupyter 확장 = 최고 조합
+T|실무 워크플로우 & 디버깅 기법
+T|Jupyter에서 프로토타이핑 → .py 모듈로 리팩토링 → IDE에서 테스트/배포
+T|디버깅 4단계: print() → assert → pdb.set_trace() → IDE 디버거
+T|방어적 프로그래밍: assert len(X) == len(y), 'X와 y의 길이가 다릅니다!'
+===SLIDE 33===
+T|SECTION 7
+T|Paper Review
+T|Analysis of 5 key papers
+===SLIDE 34===
+T|SECTION 7
+T|Review of key papers (1/2)
+T|Papers that laid the foundation of the Python ecosystem
+T|Van Rossum (2007) - Python Programming Language
+T|USENIX Annual Technical Conference (Invited Talk)
+T|Design philosophy explained by the creator of Python
+T|Dynamic typing, GIL, scalability architecture
+T|Millman & Aivazis (2011) - Python for Scientists
+T|Computing in Science & Engineering, 13(2)
+T|SciPy stack is the foundation of scientific computing
+T|Importance of software engineering practices
+T|Oliphant (2007) - Python for Scientific Computing
+T|Technical foundation explained by the creator of NumPy
+T|ndarray: contiguous memory + stride-based layout
+T|Utilization of BLAS/LAPACK, f2py/Cython optimization
+T|ML Core: ndarray is the infrastructure for all ML algorithms
+T|Perez & Granger (2007) - IPython
+T|Predecessor of Jupyter Notebook (kernel-frontend separation)
+T|Interactive computing: Think→Coding→Execute→Confirm
+T|Magic commands: %timeit, %debug, %matplotlib
+T|Literet computing: Integration of code+results+explanation
+===SLIDE 35===
+T|SECTION 7
+T|Recommended paper: Raschka et al. (2020)
+T|Machine Learning in Python - Ecosystem Survey
+T|Raschka et al. (2020) - ML in Python
+T|Information, Vol. 11, No. 4, Article 193
+T|Historical Development:
+T|  NumPy(2006) → scikit-learn(2010)
+T|  → TensorFlow(2015) → PyTorch(2016)
+T|Framework Comparison:
+T|scikit-learn: consistent API
+T|TensorFlow: Distributed Learning
+T|PyTorch: Dynamic Graph, Research Friendly
+T|Latest Trends:
+T|  AutoML, Interpretable ML (SHAP/LIME)
+T|  MLOps (MLflow/Kubeflow)
+T|Connection to this subject
+T|This survey paper provides an understanding of the entire subject in the context of
+T|Python ecosystem
+T|Data processing tool evolution:
+T|Pandas → Dask (distributed) → RAPIDS (GPU)
+T|Algorithm lineage to be covered:
+T|Linear regression, logistic regression
+T|Decision Tree, Random Forest
+T|  XGBoost, LightGBM
+T|  KMeans, PCA
+T|Ecosystem Task:
+T|GIL, production performance, library compatibility
+===SLIDE 36===
+T|SECTION 8
+T|Hands-on: Python Profiling
+T|for loop vs comprehension vs map vs NumPy performance comparison
+===SLIDE 37===
+T|SECTION 8
+T|Practice Code: Performance Measurement Utility
+T|01_python_profiling.py
+T|import time, numpy as np, matplotlib.pyplot as plt
+T|def Time Measurement(function, *args, number of iterations=5):
+T|"""Measure the execution time of a function (average after multiple executions)"""
+T|Hours = []
+T|for _ in range(number of repetitions):
+T|start = time.perf_counter()
+T|function(*args)
+T|end = time.perf_counter()
+T|hours.append(end - start)
+T|return np.mean(times)
+T|# Compare the square operation in 4 ways (data size: 1,000,000)
+T|def for loop_square(data): result = []; [result.append(x**2) for x in data]; return result
+T|def comprehension_squared(data): return [x**2 for x in data]
+T|def map_squared(data): return list(map(lambda x: x**2, data))
+T|def numpy_squared(data): return data ** 2 # ← Key! C-level inner loop
+===SLIDE 38===
+T|SECTION 8
+T|Profiling experiment results
+T|4 operations + 3 experiments
+T|Method
+T|Square operation
+T|Sumination operation
+T|Filtering
+T|Speed ratio (compared to NumPy)
+T|for loop
+T|~0.15s
+T|~0.05s
+T|~0.10s
+T|~75x slower
+T|List comprehension
+T|~0.10s
+T|-
+T|~0.07s
+T|~50x slower
+T|map()
+T|~0.12s
+T|-
+T|~0.09s
+T|~60x slower
+T|NumPy vectorization
+T|~0.002s
+T|~0.001s
+T|~0.003s
+T|Based on (1x)
+T|Key Lesson
+T|1. Be sure to use NumPy for numerical calculations (tens to hundreds of times difference)
+T|2. In pure Python, list comprehension is the most efficient.
+T|3. The larger the data, the greater the benefits of NumPy
+T|4. map() is often slower than comprehension due to lambda overhead
+===SLIDE 39===
+T|SECTION 9
+T|Practice: Data structure benchmark
+T|Comparison of search/insert/delete performance of list, tuple, dict, and set
+===SLIDE 40===
+T|SECTION 9
+T|Practice Code: Comparing Search Performance
+T|02_data_structures_benchmark.py
+T|# Comparing Search Performance: Measuring the Real Difference in O(n) vs O(1)
+T|Sizes = [1000, 5000, 10000, 50000, 100000, 500000]
+T|for size in sizes:
+T|list_data = list(range(size))
+T|dictionary_data = {x: x for x in range(size)}
+T|set_data = set(range(size))
+T|Search values ​​= [random.randint(size//2, size-1) for _ in range(100)]
+T|# list: O(n) - sequential search
+T|def list_navigation():
+T|for v in search values: _ = v in list_data
+T|# dict/set: O(1) - Instant lookup of hash table
+T|def set_search():
+T|for v in search values: _ = v in set_data
+===SLIDE 41===
+T|SECTION 9
+T|Summary of benchmark results
+T|Overwhelming search performance of hash-based data structure
+T|Operation
+T|list
+T|dict/set
+T|Difference
+T|Search (500,000 items)
+T|~0.5s
+T|~0.00005s
+T|~10,000x
+T|End insertion (100,000 items)
+T|~0.005s (append)
+T|~0.006s
+T|Similar
+T|Front insertion (10,000 items)
+T|~0.3s (insert)
+T|N/A
+T|list Slow
+T|End deletion (10,000 items)
+T|~0.001s (pop)
+T|~0.001s (del)
+T|Similar
+T|Prep deletion (10,000 items)
+T|~0.05s (pop(0))
+T|N/A
+T|list Slow
+T|Practical implications
+T|If membership checks(in) are frequent: use set or dict (O(1) vs O(n))
+T|Larger data size: benefits of hash-based data structures are maximized
+T|Memory: dict/set uses more memory due to hash table overhead (trade-off)
+===SLIDE 42===
+T|SECTION 10
+T|Hands-on: Functional Programming ML
+T|map/filter/reduce, decorators, generators
+===SLIDE 43===
+T|SECTION 10
+T|map/filter/reduce data pipeline ||| Remove missing values (None)
+T|03_functional_programming_ml.py
+T|Valid = list(filter(lambda x: list(map(lambda c: round(c * 9/5 + 32, 1), normal))
+T|# Step 4: reduce → calculate statistics
+T|sum = reduce(lambda acc, x: acc + x, normal)
+T|원시_온도데이터[75] = None    # 결측값
+T|# 단계 1: filter → 결측값(None) 제거
+T|유효 = list(filter(lambda x: x is not None, 원시_온도데이터))
+T|# 단계 2: filter → 이상값 제거 (0~50도 범위)
+T|정상 = list(filter(lambda x: 0 <= x <= 50, 유효))
+T|# 단계 3: map → 섭씨 → 화씨 변환
+T|화씨 = list(map(lambda c: round(c * 9/5 + 32, 1), 정상))
+T|# 단계 4: reduce → 통계량 계산
+T|from functools import reduce
+T|합계 = reduce(lambda acc, x: acc + x, 정상)
+===SLIDE 44===
+T|SECTION 10
+T|Decorator & Generator Pattern
+T|Function expansion and memory-efficient data loading
+T|# Decorator: Function extension
+T|def Timing (function):
+T|@functools.wraps(function)
+T|def wrapper(*args, **kwargs):
+T|start = time.perf_counter()
+T|result = function(*args, **kwargs)
+T|end = time.perf_counter()
+T|print(f'{function.__name__}: {end-start:.4f} seconds')
+T|return result
+T|return wrapper
+T|@timing
+T|def data_preprocessing(data):
+T|# Measure execution time automatically!
+T|return [x for x in data if x > 0]
+T|# generator: batch data loader
+T|def batch_loader(data, batchsize=32):
+T|index = list(range(len(data)))
+T|random.shuffle(index)
+T|for start in range(0, len(index), batch size):
+T|batch = index[start:start+batchsize]
+T|yield [data[i] for i in batch]
+T|# use: do not load entire into memory
+T|for batch in batch_loader(data, 32):
+T|Learning (batch) # Batch unit learning
+T|@lru_cache: Memoization
+T|@functools.lru_cache(maxsize=128)
+T|def Fibonacci(n): ... # O(2^n) → O(n)
+===SLIDE 45===
+T|SECTION 10
+T|Function Composition
+T|Functional version of sklearn Pipeline
+T|def Pipeline (*functions):
+T|"""Pipeline for sequentially synthesizing functions"""
+T|def composite_function(input):
+T|result = input
+T|for function in functions:
+T|result = function(result)
+T|return result
+T|return composition_function
+T|# Preprocessing functions
+T|def missing_value_removal(d): return [x for x in d if x]
+T|def outlier_removal(d): return [x for standardization)
+T|Results = ML_preprocessing (raw_data)
+T|    μ = sum(d)/len(d)
+T|    σ = (sum((x-μ)**2 for x in d)/len(d))**0.5
+T|    return [(x-μ)/σ for x in d]
+T|# Input: 100 → Missing removal → Outlier removal → Standardization
+T|Functional programming essentials
+T|map(): Data conversion (1:1 mapping)
+T|filter(): Data filtering (conditional selection)
+T|reduce(): Aggregation (list → single value)
+T|Decorator: @Timing, @logging, @lru_cache
+T|Generator: yield-based batch loading, memory saving
+T|Function synthesis: functional version of sklearn Pipeline
+T|데코레이터: @타이밍, @로깅, @lru_cache
+T|제너레이터: yield 기반 배치 로딩, 메모리 절약
+T|함수 합성: sklearn Pipeline의 함수형 버전
+===SLIDE 46===
+T|SECTION 11
+T|End-to-end ML pipeline
+T|Implementing a KNN classifier in pure Python
+===SLIDE 47===
+T|SECTION 11
+T|Pure Python KNN Classifier
+T|5-stage ML pipeline without external libraries
+T|Step 1: Data generation
+T|Synthetic 2D data
+T|Class 0: Centroid (2,2)
+T|Class 1: Centroid (5,5)
+T|100 each, 200 total
+T|Step 2: Preprocessing
+T|Min-Max normalization
+T|x' = (x-min)/(max-min)
+T|All features Unify scale to 0~1
+T|Step 3: Split
+T|Train/Test Split
+T|80% training, 20% test
+T|test_ratio = 0.2
+T|random.shuffle()
+T|Step 4: Implement KNN
+T|Calculate Euclidean distance
+T|Select k nearest neighbors
+T|Predict by majority vote
+T|Compare k=1,3,5,7,9
+T|Step 5: Evaluation
+T|Accuracy (Accuracy)
+T|Precision (Precision)
+T|Recall
+T|재현율 (Recall)
+T|F1-score
+===SLIDE 48===
+T|SECTION 11
+T|Core code: KNN classifier implementation
+T|Euclidean distance + majority voting
+T|import math
+T|def euclidean_distance(a, b):
+T|"""Euclidean distance calculation"""
+T|    return math.sqrt(
+T|        sum((ai-bi)**2 for ai,bi in zip(a,b)))
+T|def knn_predict(X_train, y_train, x_query, k=5):
+T|"""KNN prediction: Majority vote of k nearest neighbors"""
+T|    distances = [
+T|        (euclidean_distance(x_query, x_tr), label)
+T|        for x_tr, label
+T|        in zip(X_train, y_train)]
+T|    distances.sort(key=lambda x: x[0])
+T|    k_nearest = distances[:k]
+T|    votes = [label for _, label in k_nearest]
+T|    return max(set(votes), key=votes.count)
+T|Chapter 2 Concept mapping used
+T|Data generation → function, list, for loop
+T|Preprocessing → list comprehension, min/max
+T|Splitting → slicing, random.shuffle()
+T|KNN → lambda, sorted(), zip(), tuple
+T|Evaluation → f-string, arithmetic Operation ||
+T|수식: d(x,y) = √Σ(xi - yi)²
+T|k값별 성능 비교:
+T|k=1: 노이즈에 민감 (과적합)
+T|k=5: 적절한 일반화
+T|k=9: 과도한 평활화 (과소적합)
+===SLIDE 49===
+T|SECTION 12
+T|Key Summary + Review Questions
+T|Summary of Chapter 2
+===SLIDE 50===
+T|SECTION 12
+T|Key Summary Table
+T|All concepts learned in Chapter 2
+T|Topics
+T|Key content
+T|Why Python
+T|Adhesive language + rich ecosystem + low barrier to entry
+T|Data types
+T|int, float, str, bool + dynamic typing
+T|List/tuple
+T|mutable vs immutable, slicing, O(1) approach
+T|Dictionary/Set
+T|Hash-based O(1) navigation, hyperparameter management
+T|function
+T|def, lambda, *args, **kwargs, multiple returns
+T|class
+T|fit/predict/transform pattern = sklearn API
+T|Performance
+T|Profiling → NumPy vectorization → GIL bypass
+T|Development environment
+T|conda/venv + Jupyter (exploration) + IDE (production)
+===SLIDE 51===
+T|SECTION 12
+T|Summary of formulas
+T|Key formulas that appeared in Chapter 2
+T|Euclidean Distance
+T|d(x, y) = sqrt( Σ (xi - yi)² )
+T|Basics of distance-based algorithms such as KNN and K-Means
+T|Min-Max normalization
+T|x' = (x - x_min) / (x_max - x_min)
+T|Conversion of all features to the range [0, 1]
+T|Z-score standardization
+T|z = (x - μ) / σ
+T|Conversion to mean = 0, standard deviation = 1
+T|Accuracy
+T|Acc = (TP + TN) / (TP + TN + FP + FN)
+T|Correct among all predictions percentage of predictions
+===SLIDE 52===
+T|SECTION 12
+T|Review questions (1/2)
+T|Check theory + practice
+T|Q1. What is dynamic typing? What are the pros and cons of ML development compared to static typing?
+T|Q2. Why is 0.1 + 0.2 == 0.3 False? How to deal with it in ML?
+T|Q3. Why is list.append() O(1) and insert(0) O(n)?
+T|Q4. Membership check on 1 million data: Why choose list vs set?
+T|Q5. Why not call fit() on test data? (data leak)
+===SLIDE 53===
+T|SECTION 12
+T|Review questions (2/2)
+T|Coding + Advanced
+T|Q6. What is the result of [x**2 for x in range(10) if x%3==0]?
+T|Q7. Three reasons why NumPy vectorization is tens to hundreds of times faster than for loops?
+T|Q8. What is GIL? How to do CPU parallel processing in ML?
+T|Q9. Memory saving principles of generators and utilization of ML batch loading?
+T|Q10. Remove missing values ​​→ Clipping to negative 0 → 2x scaling
+T|Implement map/filter and list comprehension respectively.
+===SLIDE 54===
+T|Thank You
+T|Chapter 2: Python for machine learning
+T|Next chapter: NumPy & Pandas in depth
