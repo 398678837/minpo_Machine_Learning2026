@@ -1,0 +1,1797 @@
+Chapter
+
+나이브 베이즈
+스맹             여부 판단하교 I
+
+
+; #MUSTHAVE、
+
+■                 i
+
+□ 학습목표
+
+나이브 베이즈〜〜     모델로 문자 데이터셋올 분석해 스백 문자블 벌터링하고. 나이브 베이즈
+들                                                          더 깊게 이해해관시다.
+
+학습순서
+
+균                     、
+
+라이브러리 및               ]=
+
+
+1 문제 정의
+
+—_►
+
+데이터 불러오기-- ►
+&          데이터 확인하기
+
+3 전처리 —
+
+모멀링 및
+
+에축하기
+
+1                       J
+
+
+7.3 특수 기호 제거하기
+
+7.4 불용어 제거하기
+
+，목표 g 럼 형대 변경하기
+카문트             기반으로 백터화하기
+
+7.8 이해하기:
+나아브 베이즈
+
+5 류
+
+[ 나이브베이즈 소개
+
+나이브 배이즈는 베이즈 정리를 적용한 조건부 확불 기반의 분류 모델입니다. 여기서 조건부 확둘
+은 A가 일어났을 때 B가 일어날 확물을 의미합니다. 예들 들어 '무로라는 단어가 들어 있올 때 해
+당 메입이 스팬일 확불' 같은 겁니다. 이러한 륵징으로 스백 필터링올 위한 대표적인 보델로 꼽〒]
+
+니다, 최근에는 립러닝 같은 대안이 있어서 나이브 베이즈 보델올 쓰고자 하는 상황이 많지는 않습
+니다만. 그래도 스fl 메입 밀터처쉬 자연어 처리가목적일 때는여전히 나이브 베이즈모델이 좋은
+
+선택이 될 수 있습니다（엄러닝이 자연어 처리에 더 탁필한 보습올 보여주지만. 딥러닝보다 간단한
+방법으로 자연어 처 리를 원할 때）.
+
+▼ TOP 10 선정 미유
+
+범용성이 높지는 않지만 독립변수들이 보두 독립적⁰1라면 충분히 경쟁력이 있는 알고리즘입 니다.
+륵히나 립러닝을 제외하고 자연어 처리에 가상 적합한 알고리즘입니다. 일반적인 데이터보다는 특
+수 상황몰 고려해 배워두길 바람니다+
+
+210 2단겨| 답S 앙러취야 마숀하는 지도 마툐 앙고리S
+
+
+▼ 예시그래프
+
+조건부 확g로 데이터릅 분류하는 알고라즘입니다 ,
+
+▼ 장단점
+
+장정                            단점
+
+* 바교적 간단한 알고리즘에 속하며 속도 또한 베몹• 니모다든、독립변수가 각각 독립적임울 전세로 하는네 이
+
+
+• 작은 훈련셋으로도잘 01축합니다.
+
+는 장정이 되기도 하고 단정이 되기도 한니다 실제로
+독립변수들미 모두 독립적이라면 다른 알고리즘보다
+우수할 수 있지안. 실체 데이터어W 그련 경우가 많지
+않기 때문에 단정이기도 합니다.
+
+▼ 유음한 곳
+
+• 각 독립 변수들이 모두 독립적이고 그 중요도가 비슷할 때 유용합니다.
+
+• 자연어 처리（NU0에서 간단하지만 좋은 성능올 보여품니다，
+
+• 범주 형태의 변수가 많을 때 적합하며，숫자형 변수가 많은 때는 적합하지 않습니다,
+
+7J 문제 정의 : 한눈에 보는 예측 목표
+
+■다比迎* *
+
+스맹 문자가 오면 정말 귀찮습니다. 그나마 이통사에서 인공지능을 사용해서 스행을 한 번 걸려 보내는 데도 이 정
+도입니다. 그s다면 이동사는 스챔 문자 여부콜 판별하는 데 어떤 기법을 사용할까요? 스맹 문자는 자연어로 된
+문장입니다. 단어가 S거되어 있어서 축정 카테고리로 구분함 수 없으며 더미 변수들 사용할 수 없습니다. 문장에
+
+사용된 단어률 사용 빈도로 구분하면 스맹 여부§ 판단할 수 있지 않을까요? 이제부터 스램 문자 여부률 판별하는
+
+07장 나이y 베이즈 211
+
+
+방법을 알아보겠습니다.
+
+▼ 여I측 목 a
+
+미션        문자 데이터셋을 이음해 스a 여부물 판단하라,
+난아도
+
+알고라즘      나이브 베이즈《Naive Bayes）
+
+대이터셋 파임명  spam .csv                        종속변수  targ하（스맹 여부）
+
+대이터모 소개   스민 문자« 대한 데이터로, 독립변수는 text 하나밖에 없습니다. 그러나 이 하나의 변수에 긴 문장
+형태익 데이터들이 들어 있기 때문매 많은 전처리 작업이 필요합니다. 각 문장에 들어간 단어들울
+
+팔용하여 문자가 스H인지 아닌지올 여축하게 됩니다,
+
+문제유형      분류                              9가지표   정확도,혼동평럴
+사용한                                                           모템     Multincxn^lNB
+
+사용 라이브러리 • numpy (numpy==1.19?5)
+
+• pandas (pandas»1.3.5)
+
+• seaborn (seaborn==0.11 „2)
+
+• matplotlib (matplot hb*=3 2.2)
+
+• ski earn (sokit-learn==1.0.2)
+
+• nltk(nltk==3,2,5)
+
+매제 코드     . 위치ᅵ: colab.research.googlexom/github/musthave-MLIO/notebooks/blob/
+
+_ 피일 : 07_Naive Bayes, ipynb
+
+7.2 라이브러리 및 데이터 불러오기 & 데이터 확인
+
+우선 4개의 필수 모듈과 spamxsv 파일을 불러오겠습니다.
+
+import pandas as pd
+import numpy as np
+
+import matplotlib>pyplot as pit
+import seaborn as sns
+
+file.yrl - 1 https://media.githybusercontent.com/media/musthave-MLlO/data^source/
+main/spam*csvr
+
+data = pd. read_csv(file_url) # 데I어터셋 읽기
+
+212 2단여 답포압러취야학含하feX도학含말고리g
+
+
+he신를 사병■하여 데이터의 형태를살펴봅시다,
+
+data,bead() ᄇ :! ?I 1
+
+
+/ᄉ종속변수. 스 B 인지 아난지
+정보가          들어있음
+
+독립변수 스S 여부를
+판별하는데            사용S 문지^/
+
+0     ham Go until jurong point, crazy" Available only …
+
+1     ham                    Ok Ur"，Joking wif u oni,,，
+
+2     spam    Free entry in 2 a wkly cow to win FA Cop fina,,,
+
+3     ham    U dun say so early hoi%" U c already then say,,,
+
+4     ham Nah I don’t think he goes to usf, he lives aro,,
+
+첫 번째 걸럼인 target이 목표 변수입니다. 현재까지는 spam과 ham 두 가지네묘, 혹시 다른 값
+도                                                             있는지 unique() 함수로 확실하게 확인하고 가겠습니다.
+
+data[ target*]-unique() # 목표 변수의 고욧값 확인
+
+array(['han'고 ’span']， dtype=object)
+
+예상대로 ham과 spam뿐입니다， 여기서 spam은 스램 문자를 뜻하고, ham은 스맴이 아닌 문
+자입니다(스램과 햄으로 부르겠습니다》.
+
+text 건럼을 살펴보면 말씀드린 것처럼 자연어 형태입니다,
+
+7.3 전처리 : 특수 기호 제거하기
+
+한 가지 처리할 게 있습니다. 바로 쉼표 마침표 등과 같은 목수 기호舊임니다. 자연어를 다룰 때
+데이터의 기준은 단어입니다. 단어를 처리할 때 톡수 기호는 노이즈가 되므로 제거해야 합니다.
+우선은 제거할 하수 기호를 목록으로 마련해야 합니다，
+
+07창   버0降 213
+
+
+특수 기호 목록은 파이썬에 내장된 string에서 얻을 수 있습니다.
+
+import string # 잉포트
+
+string에 내재된 punctuation을 실행하면 특수 기호 목록을 확인할수 있습니다.
+
+string.punctuation 公 특수 기호 목특 音력
+
+이제부터 O 문자열에서 문자를 하나씩 꺼내 륵수 기호인지 판단한 뒤, 륵수 기호가 아닌 문자들
+만                                                      리스트에 저장합니다. O 각 문자를 문장으로 합치고 나서 O 이 문자알이 
+문장별로 행에 저장
+되게 변환해봅시다.
+
+
+문자플 하나씩 꺼내서
+특수기호률체역하고
+리스■에 저장합니다,
+
+d 모든문장이 한
+문자열로 합집니다.
+
+o 한 문 지 열 을 A
+
+한행에저장®니다, '
+
+
+G_o until jurocig
+point, crazy.•
+
+Available only in
+bugis n world
+
+la 擊 buffet... Cine
+there got anore
+
+Gc until jyrong point#
+crary.. Available only
+
+G          in bugis n great world
+
+0         la e buffet■■. Cine
+there oat anore wat...Ok
+Ur.. ■ Joking wif u
+oniFree entry in 2
+
+a _kly CMP to _dn FA
+Cuo fWl tkts 21st May
+2MS. Text FA to B7121 t
+
+9    Go until jurongi point ...
+
+1     Ok I ar Joking _if u on! k_.
+
+2     Free enlrj^ in 2 a wkly ■■■
+
+3     U dun 的y 的 esrly har ...
+
+4     Nah I dont thiftk he ws _«，
+
+5569  This is the zndi t네，，
+
+판다스 시리즈
+
+문자열         리스트         운자열
+
+먼저 문자열 하나하나를 가져와서 독수문자를 없에는 작업을 해보겠습니다，우신 문사인을 하나
+가져오겠습니다.
+
+samplers tring = dataftext ].loc[0] # 문자열 선택
+
+sample.string
+
+'Go until jurong point, crazy*- Available only in bugis n great world la e
+buffets - Cine there got amore wat. * J
+
+이 문자열의 문자를 하나하나 불러와 출력해보겠습니다.
+
+214 2단fl U홋 앙려취야 학合하fe A도 학6 압고리즘
+
+
+for i in samplers!ring:     1 문자열의 문자醫 하나씩 ■력
+
+print(i)
+
+G
+0
+
+u
+n
+t
+
+懸
+
+1
+
+1
+
+AHI at
+
+■ ■ •   고 ■,    ■ V
+
+그럼 한 줄에 한 문자가 출려되는데 너무 길어서 아랫부분을 생라했습니다. 이제 이렇게 普러온
+문자에 특수 기호가 보이네요,
+
+특수 기호에 속하는지 아닌지 판단하는 코드를 추가해봅시다.
+
+for i in sample_string: # 문자열의 문자들 하나씩 출력
+
+if 1 not in string.punctuation: # O 독수 기호가 아니면
+
+print(i)
+
+G
+0
+
+u
+n
+
+t
+
+1■«
+
+1
+
+생략，，-
+
+기대한 바대로 쉽표나 마침표 같은 특수 기호가 안 보입니다，O strms.punctuadon에 있는 문
+자이면 톡수 기호라는 뜻입니다. 특수 기호가 아닌 문자만 필요하므로 not in을 사용했습니다(반
+대로 특수 기호인지 판단하려면 in만 써주세요k
+
+07창   버0降 幻s
+
+
+in 살펴보기
+
+문자열에 속하는지 아닌지 알아보는 쉬운 코드를 제시 해봅니 다.
+경' in 'apple' # 문자열에 'a_가 있는치 확인
+
+True
+
+■b' in 'apple' # 문자열에 'b'가 있는치 학인
+
+False
+
+apple'이라는 문자업 안에 뇨가 있으므로 True. _b'가 없으므로 False가 됩니다. if절은
+주어진 조건에서 True 인 것들에만 작동하게 됩니다.
+
+이렇게 특-수 기호를 제외한 문자^ 리스트 형태로 모아주겠습니다,
+
+new_string = [] # <) 빈 리스트 생성
+
+for i in sample_string: # 문자열 순회
+
+if i not in string.punctuation: 삭 록 기토가 이 니
+
+new_string.append(i)      # 0 리스트에 문자 추가
+
+O 빈 리스트(뻐내匕나이마반를 하나 만을어 ᄋ appendO 함수를 사용하여 훅수 기호가 아닌 문자
+를                                                             하나씩 추가합니다.
+
+new_strinK을 출러하면 리스트 형 태로 문자를 확인할 수 있습니 다.
+
+new_string
+
+216 2단며 S審뻐워야 학따는지도 뼤邱리B
+
+
+문장을 분석해야 하므로 리스트 안의 문자들을 문자열로 만들어야 합니다. joint) 함수를 쓰면 리
+스트 안의 값들을 하나로 합칠 수 있습니 다.
+
+함수명     설명
+
+3PPXy( )      리스트 안애 있는 문자들을 합차서 문자열로 안몸니다.
+
+sample = [ a*/p\ p\ U/e,] # Q
+
+*join(sample) # Q
+
+，a_p_p_l_e,
+
+©sample 리스트에 문자5개가 있습!니다, 0 joinO 함수앞에 ！:올 푿였全니다. 각문자사이에 _묻
+넣으라는 뜻입니다. 마무것도 자정하지 않아도 원!J다.
+
+문장 형태로 만들어봅시다，
+
+new_string = [] # 빈 리스트 생성
+
+for i in sample_string: # 문자염 순회
+
+if i not in string.punctuation: # 륵수 기호가 아니면
+
+newest ring, append(i)     ff 리스트에 문자 추가
+
+new_string = f' Join(new_string) f Q 리스里暑 문자열 형태로 변환
+
+O joint) 코드는 for문이 모두 끝난 뒤에 실행되어야 하니 돝여쓰지 않도록 주의하시기 바람니다.
+그럼                                                           이 코드를 별도의 함수로 만둘겠습니다,
+
+
+def remove_punc(x): Q :
+new_string                  = [] fl 빈 리스트
+for i in x:        순회
+
+if i not in string.punctuation:
+new_string.append(i)
+
+new_string = '' Join(new_string)
+return new_string
+
+# 록수 기호가 아니면
+# 리스트에 문자 추가
+
+# 리스트들 문자열 형내로 변환
+
+# O 반환
+
+O  def를  사항하여  remove_punc()  함수를  지정했습니다,  0  최종적으로  합쳐진  new_^trin^
+
+값을 반환합니다，
+
+07창 나0|M_0l즈 217
+
+
+함수가 잡 작동하는지 samp【e_str【ng으로 테스트하겠습니다.
+
+removej)unc《sample_string) # 특수 기호 삭세 함수 호출
+
+*Go until jwrong point crazy Available only in bugis n great world la e buffet
+Cine there got amore wat1
+
+우리가 기대한 결과를 확인할수 있습니다, 그러면 데이터(data)에 적용할 차례입니다. 과연 제대
+로                                                           동작할지 궁금하군요，
+
+remove_punc(data['text']) # 독수 기호 삭제 합수 호출
+
+_Go until jurong point, crazy,. Available only in bugis n great world la e
+buffet… Cine there got amore wat...Ok lar." Joking wif u oni,"Free entry
+
+in 2 a vrkly comp to win FA Cup final tkts 21st May 2005, Text FA to 87121 to
+receive                                                      entry question(std txt rate)T&CVs 
+apply 08452810075overl8\1 sU dun say
+so early hor,,» U c already then say., JNah I donX't think he goes to usf> he
+
+lives around here thoughFreeMsg Hey there darling it'.s been 3 week\'s now and
+no word back! IVd like some fun you yp for it still? Tb ok! XxX std chgs to
+
+send, £1.50 to rcvEven my brother is not like to speak with me. They treat me
+like aids patent.As per your
+
+결과물에서 원가 이상한 점이 느껴지시나요? 행마다 한 개 문자열이 보이길 기대했으나 한 행에
+모든                                                             문자가 합쳐진 형태입니다, 이대로 datal        를 
+업데이트해주면 큰일 납니다, 언제 어떤
+문제가 발생 할지 모르니 데이터를 다룰 때는 반드시 하나하나 확인해주세묘.
+
+이런 상황이 발생한 이유는 remove. pund) 함수가 한 줄의 문자언에반 작동하도록 설계되었
+기 때문입니다. 따라서 시리즈의 한 줄 한 줄 따로 적용되게 하는 코드를 구현해 해결하면 됩니다,
+applyt) 함수를 사용하면 데이터프레임의 한 줄 한 줄을 따로 함수에 적용시길 수 있습니다,
+
+218 2단께 답포 압러워야마습하는 지5:학食앙고리유
+
+
+함수명      설명
+
+Joint)      함수가 데이터의 한 행미다 별도로 적용되어야 힐 때 사용하면 각 행미디 함수물 적용할 수 있습니다,
+
+data = pd.Series([[lj 2]> [3， 4, 5]]) # O
+def check_len(x):
+
+return len(x)
+
+data-apply(check.len) # O
+
+0  2
+
+1   3
+
+dtype: int64
+
+Oda切의 각 행에 각각 숫자두개 [1H 기악세개 [3.4.5]플 가전 리스퇴[1,2】.【3,4, 테가들어 있
+습니다, O data 뒤에 applyO콜 붙이고 사용하러는 참수익 이콤을 넣습니다.
+
+apply() 함수를 사용해 데이터프레임 전체가 아닌 text 변수에. 즉 판다스 시리즈 형태에 적용해
+보겠습니다.
+
+data[_texV].apply(removejH』nc) # 함수에 한 행씩 적용되도록 실행
+
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5569
+
+5570
+
+5571
+
+5572
+
+5573
+
+Go until jurong point crazy Available only in …
+
+Ok lar Joking wit u oni
+Free entry in 2 a wkly comp to win FA Cup fina…
+U dun say so early hor U c already then say
+
+Nah I dont think he goes to usf he lives aroun…
+
+• * •
+
+This is the 2nd time we have tried 2 contact u...
+Will                        u b going to esplanade fr home
+
+Pity was in mood for that Soany other suggest…
+
+The guy did some bitching but I acted like id ，，을
+
+Rofl Its true to its name
+
+Name: text. Length: 5574, dtype: object
+
+우리가 기대한 대로 출러됐습니다. 결과를 data[_text1 에 업데이트해주겠습니다,
+
+datat text1] = dataf1 text apply(remove_punc) 네 1니＜ S 11이느
+
+o? 장 나아y 메이a 219
+
+
+7.4 전처리 : 불용어 제거하기
+
+특수 기호를 모두 처리했으니 이번에는 불용어”따"써를 제거하겠습니다. 불용어는 자연어 분석에
+
+큰 도움이 안 되는 단어를 의미합니다. 이러한 단아를 제거해주면 데이터를 조금이나마 더 가법게
+만들 수 있습니다, 자연어 처리에서는 각 단어가 하나의 독립변수처럼 작용하기 때문에，지금은
+컬럼이 2개분인데도 분석 과정에서 데이터를 방대하게 펼치게 됩니다. 그래서 舊몸어를 제거해
+조금이라도                                                             부담을 더는 겁니다,
+
+그러한 이유로 불용어를 제거해보겠습니다. O 판다스 시리즈에 저장된 문자언 하나를 단어 단위
+로 리스트로 변환하고 _ o 불용어가 아니 면 소문자로 저장한 뒤 一 O 문자를 문자법로 합칩니
+다.                                                                一 O 이 과정을 반복하며 모든 문자열에 적용합니다.
+
+분석의 목적에 따라 불용어가 달라질 수 있습니다. 예를 뭍어 지금처림 스팸 문자를 예측할 때와_
+
+상품 리뷰의 금정/부정을 예측할 때 의미 있는 단어의 성격이 다를 수 있습니다. 불용어를 목적에
+맞게 작성해도 되지만. 여기에서는 nltk 라이브러리에서 제공되는 불용어 목록을 사용합니다, 우
+선 nitk를 통해 *stopwords'< 다운로드함'니다，
+
+import nltk # 임포트
+
+nItk.download('stopwords*) # 불용어 옥륙 가져오기
+
+[nltkᅩdata] Downloading package stopwords to /root/nltkjlata"，
+[nltk^data] Unzipping corpora/stopwords.zip•
+
+True
+
+220 2단계| 답포 앙러춰야 학含하는 지도 학含 압고리H
+
+
+이제 stopwords를 임포트하겠습니다.
+
+from nltkxorpus import stopwords     匕1기 복^ '，느
+
+st opwords 에서 제공되는 리스트를 할인해 시다,
+
+stopiM)rds.words(’engUsh') # 영 어 또) 나
+
+Vi\
+
+iwe ,
+
+*myselffi,
+
+*we\
+
+#ours\
+
+’ourselves’,
+
+■y매’,
+Wre'、
+”y에_ve”,
+
+**you,ll\
+
+■you'd'
+"your、
+’yours 、
+’yourself、
+'yourselves*,
+
+생략
+
+stopwords.wordsCenglish) 에서 English'
+
+english' b 영문 불용어를 지정하는 속성입니다. 한국어 불용어를 지정하려면 ' kore'
+를 넣으면 될 것 같지만 안 됩니다. NLTK 라이브러리는 한국에 달용어가 제공되시 않습
+니다, 한국어 테스트를 다룰려면 불용어를 법도로 리스트 형태로 만풀-어서 지정하시거나，
+구글에서 검색하여 몇 가지 준비된 한국어 불용어를 활용하면 됩니다. 또한 한국어의 경우
+
+영어와는 달리 단어에 조사가 붙기 때문에 특정 단어를 포착하기 위해 이러한 부분도 처리
+해야 하는데, 이 책에서는 NLP가 주목적이 아니므로 해담 내용까지는 다루지 않습니다，
+한국어                                                      불용어는 www,ninks,nl 등어I서 받을 수 있습니다,
+
+07 fl 나아1베이즈 221
+
+
+• 한국어 불용어 « https7/www<ranks.nl/stopwords/korean
+
+stopwords는 현재 24개 언어의 불용어를 제공합니다.
+
+from nltk<corpus import stopwords
+print(stopwords *fileid5())
+
+farable \
+’azerbaijani、
+'bengali\
+'danish
+'dutch、
+'english\
+'finnish、
+'french
+
+■german*,
+
+■greek、
+'hungairian1
+
+■Indonesian、
+'Italian'^
+'kazakh
+'nepali\
+'norwegian1,
+
+1 Portuguese1'
+
+•romanian、
+'russian1
+’Slovene、
+
+■Spanish、
+'Swedish、
+'tajik、
+Turkish1]
+
+리스트 형태로 제공되며, 분석에 큰 영향이 없을 것 같은 단어(i. you, he, she 등)가둘어 있습니
+다.                                                            불8서를 제거하는 함수를 만들겠습니다.
+
+우선 for문을 통해서 문장의 단어를 하나하나씩 불러와야 합니다. 특수 기호는 문사 하나하나를
+불러와서                                                           확인했던 반면, 이번에는 단어 하나하^ 불러와야 합니다, 그러나 
+문장을 그대로 for
+
+222 2단fl 답M 암려취야 학含하는 X또 학숏많고리fi
+
+
+문에 적용하면 아까처멈 문자 하나씩 불러오므로 문장을 단어 단위로 쪼개는 작업이 필요합니다.
+
+spht()함수를 사용해 쪼갤 수 있습니다.
+
+함수명     십명
+
+split( > 기본적으로 떡어쓰기 기반으로 단어S S리함니다、인약 터어쓰기가 아니라 특정 문자 가준으료 분리
+
+하고 심다면 괄호 안에 해당 문자롭 입력하면 §니다, 알파策 득수 기호 등 어떤 것도 가눙합니다, 예시
+몰                                                           위하여 임의익 스트링을 하나 만들겠습니다.
+
+sample_string2 = 'This is not - SPAM’
+
+이 문장을 문자롭 기준으로 나눠보겠습!_ᅵ다,
+
+sample_st「ing2,spUt('-') # 독정 문자블 기준으로 문자열 분할
+
+['This is not ' SPAM']
+
+sample'string ■ data['text']*lo€[3]
+
+sample_string«5plit() # 단어 단위로 문장 분할
+
+「G。',
+
+*until\
+'jurong*,
+'point',
+
+*  crazy1,
+’Available、
+"only  、
+
+’in、
+
+*bugis',
+
+rn',
+
+■great、
+’world',
+
+*e',
+
+*  buffetr,
+’Cine’,
+
+r there ■,
+
+*90t\
+'amore',
+
+07창 나이 u 베이즈 223
+
+
+단어 단위 리스트로 변경되었습니다.
+
+각 단어가 불용어에 속하는지 아닌지 판독하는 m를 구현하겠습니 다.
+
+for i in sa^iple_stringL split (): # 순회
+
+if i not in stopwords.words( English'): ■■■   ’ 41" 아니 ?1
+
+print(i) # ft력
+
+Go
+jurong
+point
+crazy
+Available
+bug     is
+
+n
+great
+world
+la
+
+e
+
+buffet
+Cine
+got
+
+a mo re
+wat
+
+여기서 하나 손봐주어야 할 부분이 있는대요. 보면 Go나 Cine 같은 단어는 첫 글자가 대문자입
+니다. 파이썬은 대소문자를 구분합니다，stopwords에 들어 있는 단어들은 모두 소문자로 되어
+있습니다. 정확하게 하려면 확인할 단어가 모두 소문자이어야 합니다、따라서 suinn의 대소문자
+변환에 관련된 코드를 살펴보겠습니 다.
+
+224 21단께 답홋않라춰야학合하학숍 앙고러舜
+
+
+함수명      설명
+
+lower()     소문자로 바®니다.
+
+sample_word = 1nAive^Bayes1
+
+print (samp le.word dower())
+naive^bayes
+
+upper()     대문자로 바골니다.
+
+print (sample.word* upper ())
+NAIVE.BAYES
+
+capitalized 단어의 첫 문자만 대문자로, 나머지는 소문차로 바끝니다.
+
+print(sample_word.capitalize())
+
+Naive^bayes
+
+lowed) 함수를 사용해 모두 소문자로 바꿉니다.
+
+for i in sample.string.split() : # 순회
+
+if i^lowerf) not in stopwords-words( english'): O 」사 아니거 소문자모
+
+print(i» lower()) # 소문자로 술력
+
+go
+jurong
+point
+crazy
+
+available
+bu g i s
+n
+
+great
+world
+la
+
+07잠 나이U 베이즈 225
+
+
+e
+buffet
+cine
+got
+ainore
+wat
+
+O 단어를 받아주는 역할을 i가 하고 있기 때분에 i에 lower를 적용했습니다，
+각                                            단어를 문장으로 다시 합침니다.
+
+new_string=[] # © 빈 리스트 생성
+
+for i in sample_string<split() : # 순회
+
+if i AowerO not in stopwords-words(senglish *):
+
+# 소문자로 변환한 단어가 불용어가 아니면
+
+newest ring. append (i. lowe r ()) # Q 문자 단위로 추가
+
+new_string = ' ' Join(new_string) 轉 O 공백 딘위로 묶기
+
+newestring
+
+•go jurong point crazy available bugis n great world la e buffet cine got amore
+wat1
+
+O 빈 문자열을 만들어 O 문자 단위로 추가해 O 공백을 기준으로 단어를 합쳐즘니다.
+
+joint) 앞 따옴표 사이에 공란을 빼럭시 마세요' 우리가 특수 기호를 제거할 때는 이곳에 빈칸이
+없었는데. 이때는 문자 하나씩을 모아서 문장처럼 이어붙였기 때문입니다. 반면 지금은 단어 단위
+로 모아졌기 때문에 단어 사이의 빈칸을 만들어주어야 합니다. 그래야 제대로 된 문장 형태로 변
+
+경됩니다,
+
+샘플 문장에서 stopwords를 제거하는 코드를 작성해보았습니다. text 걸럼 전체에 적용해야 하
+므로 법도의 함수로 반풀-고. apply(》를 각 데이터 라인에 적용시키겠습니다.
+
+def stop_words(x):
+
+new_string=[]     ft 새 리스트 생성
+
+for i in x, split(): # 순회
+
+226 2단제 답쯧 앙척춰Of 학습지도 학含 앙교2|습
+
+
+if idower() not in stopwords*words( english ):
+
+# 소문자로 변환한 단어가 불용어가 아니면
+
+newest ring. append (i. lower( ) ) # 운자 단위로 추가
+
+new_string = ■ T.join(new_string) # 공벽 단위로 묶기
+
+return newest ring # (J 반환
+
+data[，t_t’] ■ data[ * text1 ]* apply (stop _words) # O 텍스■호에 stop_words 함수 적용
+
+data[ texf]
+
+0     go jurong point crazy available bugis n great
+
+1                        ok lar joking wif 니 oni
+
+2     free entry 2 wkly comp win fa cup final tkts 2"，
+
+3               u dun say early hor ui c already say
+
+4          nah dont think goes usf lives around though
+
+■響 ，爭
+
+5569   2nd time tried 2 contact u u £750 pound prize ..<
+5570                  u b going esplanade fr home
+
+5571                   pity mood soany suggestions
+5572   guy bitching acted like id interested buying s...
+
+5573                             rofl true name
+
+Name: text. Length: 5574, dtype： object
+
+원하는  대로  출여되었군瓦  sampl<_strkig을  x로  변경하고,  O  최종  변경된  n대_string을  반
+한합니다. 그리고O data[_text」에 반영함니다.,
+
+7.5 전처리 : 목표 컬럼 형태 변경하기
+
+이번 예제에서 목표 걸럼은 문자(spam과 ham)입니다. 문자 혐식의 데이터도 모델링에 에러를
+유발하지는 않지만. 때에 따라 해석에 문제가 생길 수도 있기 때문에 숫자로 변환하겠습니다. 변
+환에는 map() 함수를 사용합니다.
+
+07창 나이즈 227
+
+
+합수명       성명
+
+map()         map() 함수는 딕서너리 다입의 데이터품 사용하여 매징되는 값을 昔러오도목 사용알 수 있습니디
+
+samplel = pd + Series(['a’/b'/<:']) « O 시리즈 생성
+samplelunap({'a': ’apple、ʳb':'banana', _c_: .cherry’})
+# ᄋ 키의 값 출력
+
+0  apple
+
+1   banana
+
+2   cherry
+dtype: object
+
+O a. b. eg 판다스 시리즈 형태로 저장합내나
+
+O map() 함수가 억서너리 {'a': 'apple', b' ba nan a 7c':'cherry M서 a. b. c 각각의 키에 애칭되
+는                                                         값듈을 불러옵니다.
+
+또한 app^yO 함수처령 다른 람수률 적용시키는 더I에 사용할 수도 있습니다.
+
+sample2 = pd，Series([’a■/『/(']) # Q 시리즈 생성
+
+def add_i(x); # O 사용자 치정! 함수
+
+return x+_i'   # lih 추가
+
+sample2unap(add_i) # 0 _i_물 추가하는 함수 호출
+
+0  ai
+
+1   bi
+
+2   ci
+
+dtype: object
+
+O a, b. c률 판다스 시리즈 형태로 저장합내다.
+
+O 각 문자에 -가 추가되는 함수픕 안&었습니다,
+
+O map을 사용하여 민다스 시리즈에 add_i() 함수물 적용시켰0丄1다.
+
+스램이면 1, 아니년 0으로 변환합시다,
+
+dataf target*] ■ dataftarget*] -map({, spam*     'ham* ：e}) 轉 Q 택스트■ 숫자로 변환
+
+data['target1] # *력
+
+228 2단저 답s 앙러주I야 학含하fe 자도 박쯧 망고리쭌
+
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5569
+
+5570
+
+5571
+
+5572
+
+5573
+
+Name:
+
+난
+
+1
+
+난
+난
+
+I?
+
+난
+
+target. Length： 5574, dtype： int64
+
+Omap O 함수 인수로 딕셔너리 형태로 매핑할 값을 정의해 넣어주었습니다， €> 출러을 보니 0
+
+과 I로 제대로 변경되었습니다.
+
+7.6 전처리 : 카운트 기반으로 백터화하기
+
+카운트 기반 벡터화는 말 그대로 문자를 개수 기반으로 백터화하는 방식입니 다. 데이터 전체에 손
+재하는 모든 단어들을 사전처럼 모은 뒤에 인덱스를 부여하고. 문장마다 속한 단어가 있는 인덱스
+를 카운트하는 겁 니다.
+
+예를 들어 다읍과 같은 데이터가 있다고 합시다. 카운트 기반 벡터화 과정을 그림으로 확인해보겠
+습니다.
+
+07창 나이브비아즈 229
+
+
+▼ 카욘토기반백터화과정
+
+text
+
+9                      Bbro«iTi dog nhite cat brwn bear*
+
+_it任 dog black doo'
+
+o 데이I터에I 있는 모든 단어몰 확인해 컬령으로 삼습니다,
+
+
+br_    black    white
+
+cat
+
+bear
+
+dog
+
+
+dat이*]      e      모
+
+l       l       1       1
+
+
+datafl] j
+
+1              1       1       e
+
+0      2
+
+©각문장마디 g 현한
+
+던어 수률 획인합니다,
+
+1              0               3
+
+◎ 각 단어에 대한 인덱스■ 부여합니다.
+
+rf61     _      n
+
+B - brown
+1 • black
+
+2 - white
+i • cat
+
+4 - bear
+
+5 - dog
+
+
+인덱스 번호 g 련©수:
+
+O 변환된 대이터는 아래와 같은 포？!으로 각 명마다 해당
+인텍스의 단어가 S 번 나IWfe지醫 표시함니다. 출현하지
+
+i r 않은 단어의 인닥스는 포험하지 않습내다.
+
+
+data[이에 있는
+단어들의          종현 횟수
+
+datafnl 에있는
+단어들의 ■현 환수
+
+(<1 3)
+
+— <0， 4)
+
+생화
+
+—■ (n» ,1
+
+《n. 1)
+
+(，，■ 2)
+
+—- <이 5)
+
+이제부터 카운트 기반 벡터화 기법을 코딩로 구현해봅시다. text와 target 걸럼을 x. y라는 이름
+으로                                                          저장합니다.
+
+x = data[ text ]     # 독립변수
+
+y = dataf target1] # 종속변수
+
+벡터화에 사용할CountVectorizer를 임포트합니다.
+
+230 고단제 답®망격워마 학食하는 지£학슬 앙고리중
+
+
+from sklearn,feature_extraction.text import CountVectorizer
+
+CountVectori^er 사용 방법은 scaling과 상당히 유사합니다. 임의의 이름으로 해당 모듈 속성
+을                                                   부여하고, fh()으로 학습하며 transform( >으로 변환합니다.
+
+우선 fitO으로 학습을 진행합시다.
+
+cv = CountVectorizer() # 객체 생성
+
+cv.fit(x) # 0 학습하기
+
+cv^vocabulary. # O 단어와 인텍스 출혁
+
+go': 3791,
+
+jurong': 4687,
+
+point': 643'
+
+crazy': 2497,
+available': M14,
+bugis1: 1881,
+
+great': 3888
+
+world4: 9184,
+
+la1: 4847,
+
+buffets 1879,
+
+cine': 2214,
+got': 384B,
+amore': 1181。
+wat1: 8947,
+
+ok*: 5995,
+
+lar': 4886,
+joking': 4655，
+wif*: 9079,
+
+이나': 6027,
+
+생략
+
+O fit<) 으로 x를 학습한 결과를 CV 객체( 모낸에 저장합니다. Q CY 뒤에 vocabulary_를 쓰면
+객체에 돝어 있는 모든 단어에 대한 인덱스를 볼 수 있습니다. 여기서 인덱스는 큰 의미가 없는 일
+종의 id와 같은 역할입니다.
+
+그럼 이제 학습된 cv의 transform) 함수로 데이터 x를 변환하고 결과를 확인하겠습니다.
+
+07장 旧||브_|5 2311
+
+
+x = cv.transform(x) # 트랜스폼
+
+print(x) I 이 데이터는 print醫 사용해야 아래와 ■ 곁과쿨이 보입니다,
+
+( 0 , 1181 ) 1
+
+( 0 , 1414 ) 1
+
+( 0 , 1879 ) 1
+
+( 0 , 1881 ) 1
+
+( 0 , 2214 ) 1
+
+(0， 2497) 1
+
+( 0 , 3791 ) 1
+
+(0， 3848) 1
+
+(0， 3888) 1
+
+(0， 4687) 1
+
+( 0 , 4847 ) 1
+
+( 0 , 6433 ) 1
+
+(0， 8947) 1
+
+( 0 , 9184 ) 1
+
+( 1 , 4655 ) 1
+
+( 1 , 4886 ) 1
+
+( 1 , 5995 ) 1
+
+( 1 , 6027 ) 1
+
+( 1 , 9079 ) 1
+
+(2, 71)  1
+
+생략，，+
+
+다소 이해하기 힘든 출러 형태네요, 첫 번째 줄의 데이터를 에로 &어 구체적으로 압아보겠습니다.
+
+O 데이터의 행 번호(여기서는 0번째 줄 데이터》:: O 단어의 인덱스값 O 험!0|서 술현 위수
+厂|、「一
+
+(0， 1181) 1
+
+O 첫 번째 숫자인 0은 우리가 변환시킨 데이터의 행(row) 번호입니다, 0빈째 줄 대이터라는 의
+미입니다. O 뒤에 있는 숫자는 단어의 인덱스값이고. 9 마지막 1 은 해당 단어가 1 빈 등장했다는
+의미입니다. 따라서 *0번째 행 데이터에는 인덱스가 1181 인 단어가 한 번 등장한다’로 해석하면
+됩니다. 실제로0번째 행의 데이터를 확인해봅시다.
+
+data/loc[0]['text'] # 0번째 행의 'text' 열의 값 선택
+
+232     답S 일리숴야 학호하는 자도 학J 않고리S
+
+
+'go  jurong  point  crazy  available  bugis  n  great  world  la  e  buffet  cine  got  amore
+wat1
+
+정말그런지  앞의  세  단어  go,  jurong,  point만  확인하볼게요,  cv.vocabulary_는  딕셔너리  형
+태                                                              였기 때문에, 다음과 같은 코드로 인덱스값을 출력하면 됩니 다.
+
+print(cv.vocabulary_[rgo1 ])        Jʲ 덱스 너
+
+print(cv.vacabulary_[, jurong'])         「.스 역
+
+print(cv.vocabulary_[,point ]) Jj           r”:'
+
+3791
+
+4687
+
+6433
+
+KQ3 앞의 코드매서 굳이 printO 함수S 사용하지 않아도 원니다, 그럼에도 사용한 이유는 이 책의 살습S 주피터 노
+트북｛코렵）에서                                                                      진8하기 a■문입니다. 주피터 
+노트북에서 한 셀에 여리 쥴플 §력하려면 pnntf） 물 싸서야 합니다. 그러
+지 않으면 마지악 한 좋에 대한 결광값안 9력합니다. printO 함수를 쓰지 않으려면 fi력 단위（앞의 코드예서는 한 줄）로
+실행해야 합니다，
+
+go의 인백스는 3791. jurong은 4687. point는 6433입니다. °1 숫文］■가 문장（X 출련 결과》에
+서                                                                한 번씩만 출연해야겠효? 정말 그런지 확인해볼까요?
+
+(0> 1181) 1
+
+1414) 1
+
+1879) 1
+
+1881) 1
+
+2214) 1
+
+2497) 1
+
+3791) 1    90
+
+3848) 1
+
+3888) 1
+
+4687) 1 -   jurong
+
+4847) 1
+
+6433) 1    point
+
+(0> 8947) 1
+
+07창 나이u 베아즈 233
+
+
+( 0 , 9184 ) 1
+
+( 1 , 4655 ) 1
+
+( 1 , 4886 ) 1
+
+( 1 , 5995 ) 1
+
+( 1 , 6027 ) 1
+
+( 1 , 9079 ) 1
+
+( 2 , 71 ) 1
+
+(2, 441) 1
+
+* *  잰& 게마* * *
+
+샘플로 3개 단어반 확인했습니다, 그뫼 단어를 확인해도 결과는 입치할 검니다, 문자를 이런 식의
+형태로 변환시키는 방법을 카운트 기반 메터화(CounterVectorize)라고 합니다,
+
+7.7 모델링 및 예측/평가하기
+
+모델링에 앞서 훈련셋과 시험셋으로 나누어주겠습니다, 카운트 기반 벡터화과정에서 X와 y로 데
+이터를 나누어주었으니 이를 활용하며 train_test_split() 함수로독립변수/ 종속변수에 대한훈
+련셋/시혐셋 분할을 진행하겠습니다.
+
+from sklearn-model_selection import train_test_spUt # 임포트
+x_train, x^test^ y^train^ y_test : train_test_split(x, y, test_size 三 0.2,
+random_state = 100) # 학습성!, 시험셋 분할
+
+나이브 베이즈 알고리즘으로 Multinomial NB 모듈을 사용합니다. 역시 sklearn 라이브러리에
+서                                                            불러올 수 있습니다.
+
+『데 MultinomialNB 모듈
+
+다망 분포에 대한 Natve Bayes 알고리즘입니다. 다항 문포(Multinomial) 익에 성규분포(Gaussian), 버르누이 분포
+(Bernoulli)0| 따른 NB 모듈이 있으며, 대이터 의 특성울 명확히 nm기 어렴다언 이 세 가지 모듈불 5두 사용하여
+가장 결과가 좋몬 모델을 선텍히시면 침니다.
+
+from sklearn-naive_bayes import MultinomialNB
+
+234 2단계I 답쯧앙러줘야 학食하는 지도학습 암고리H
+
+
+사용 방법은 다른모델링 방법과 같습니다, fit()으로학습하고 predictO로 예측하면 됩니다,
+
+model = MultinomialNBO       # 모델 객체 생성
+
+model,fit(x，train, y_train) # 학습
+
+pred ■ model-predict(x_test) # 예촉
+
+예측 결과를 평가에 accuracy .scored 함께，이번에는 confusion_mairix 모듈도 사용하겠습
+니다. confus[on_matrix는 실챗값과 예측값을 비교하여 매트리스 형태로 표현하는 모듈입니 다.
+
+confusion_matrix 모둠
+
+S울 실첫값 0과1. 열을 예측값 0과 1 로 우어 2 * 2 매트릭스醫 안6니다. 이품 ■해 실첫값이 0인데 매축2t£0인 경우_
+실엇값은 0인데 0RST은 1 인 경우, 실첫값도 1 이고 예측값도 1 인 경우. 실첫값은 1 이나0»측값은 0인 4가지 3우풀 한눈
+예 피와할 수 있습내다.
+
+的curacy_scoreO와 같이 실셋값. 예측값을 순서내로 넣어주면 됩내'
+
+conhisiori_matrix(실첫값, 에촉값)
+
+둘 다 같은 라이브러리에 있으므로 아쾌 코드로 한 번에 임포트합니다h
+
+from sklearn.metrics import accuracy_score? confusion^matrix
+
+정확도부터 확인하겠습니다，
+accuracy^scorety^testj pred) 蓄 정확도 계산
+0/9856502242152466
+
+약 98,9%로 아주 높은 예측률을 보여즙니다. 다음으로 confusion_matrix(｝를 斗§■하겠습니다、
+
+print (conf usion_matrix(y_testj pred)) # 혼롱 행렇 출력
+
+[[965 12]
+
+[  4 134]]
+
+더 깔끔한 결과물을 얻고자 print()를 함께 사용했습니 다,
+
+07정 나_버아즈 236
+
+
+t o n f u s i o n _ m a t n x O 는 실 첫 ! 값 과 예 측 값 들 이 각 각 어 떻 게 분 포 되 었 는 지 를 행 렬 로 나 타 냅 니
+다, 이를 혼동 행렬«매5〜 rrwtriK이라고 부릅니다(오차 행럴이라고도 합니다). 각 셀은 다음과 같은
+
+기준으로 분류됨니다.
+
+
+0
+
+실잿 값
+
+1
+
+예측값
+
+0           1
+
+965            12 1
+
+4           134      1
+
+. 잘예측한경우
+
+] 잘못예축한경우
+
+O 실젯값이 0 이고 예측값도 0 인 경우는 965 건, O 실젯값이 1 이고 에촉값도 1인 경우는 134건
+입니다, 배경에 음영이 있는 영역이 정확한 예측에 해당합니다，그리고 O 1 인데 0으로 잘못 예측
+된 경우는 4건，반대로 O 실젯값은 0인데 1로 잘못 예측된 경우는 12건입니다，흰색 배경 영역이
+잘못된 예측입니다.
+
+confusion_matrhc() 의 출력 결과에 어느 쪽이 0이고 1 인지 별도의 레이블이 달려있지 않아 헷
+갈린다면. heatmap( >을 사용함으로써 살펴볼 수 있습니다，
+
+sns.heatmap(confusion_niatrix(y_test, pred), annot=True,               )
+# O 혼동 행릴 히트맵
+
+<AxeESubplot:>
+
+4               B4
+
+0
+
+O fmi 매개변수는 히트랩 안의 숫자가 표시되는 형식을 정의합니다.，아는 소수점 이하 없이, .2f
+를 쓰면 소수점 둘째 자리까지 보여즘니다, 경우에 따라 해당 매개변수가 없믈 시 과학적 표기법
+으로 나타납 수 있으니 필요할 때 설정해주면 되겠습니다,
+
+236 2단계 답용 압러취야 학含하fe 자£ 탁s 말고리푯
+
+
+이 매트리스의 값들을 단순 산술해도 정확도를 구할 수 있습니다. 정확도 수식은 다읍과 같습니다,
+
+정확한예측건수
+전체 경우 수
+
+수식을 적용해보겠습니 다.
+
+
+955 + 134
+
+955+134+12 + 4
+
+뉴 98%
+
+예상대로 accuracy_score() 계산 결과와 같은 수치입니다, 즉, 혼동 행렬은 정확도보다 디 많
+은                                                             정보를 제공합니다. 각 셀에 부여된 명칭이 있을 정도로 중요한 
+지표임니다.
+
+▼ 추동행병
+
+예축값
+
+0                   1
+
+
+True Negative
+
+0          (TN)
+
+실       음성물 음성으로 판단
+첫
+
+값         False Negative
+
+1          (FN)
+
+앙성을 음성으로 판단
+
+False Positive
+(FP)
+
+음성을 앙성으로 판단
+
+True Positive
+(TP)
+
+앙성을 앙상으로 판단
+
+명칭은 참/거짓마세데〜과 양성/음성FU애e/Ne빠빠의 조합으로 이우어졌는데, 우선 참/거짓은 정
+확한 예측 영익인지 잘못된 예측 영역인지에 따라 나뉩니다. 정확한 예측은 참_ 잘못된 예측은 거
+짓입니다. 양성파 옴성은 예측값을 기준으로 나법니다, 예두값이 1 이년 양방 0이면 음성입니다,
+
+이 프로젝트에서는 Spam이면 양성인 1이 됩니다. 양성/음성은 예측값 기준으로 결정됩니다. 혼
+
+동하지 많도록 합시다,
+
+False는 하나의 별칭이 더 있습니다.
+
+07정 나아■베아즈 237
+
+
+음
+
+실  성
+
+5값1
+
+성
+
+
+잘못된 예측된 두 영역을 오류「라고 부릅니다. 거
+
+짓 양 성 은 1 종 오 류 〜 e 1  거 짓 음 성 은 2 종 오 류
+
+Tvpe PFw입니다 _양성 i종 음성 2 종' 으로 뫼우시면
+편합니다                                  。
+
+1 종 오#(Type 1 Error)
+
+실제 음성인 것울 양성으로 예측허는 오류.
+
+False Positive
+
+2종 오StType 2 Error)
+
+실제 앙성인 것플 음성으로 예측하는 오류.
+
+False Negative
+
+1 종, 2종 오류는 성격이 다른 오류이고, 때에 따라서는 둘 중 한쪽이 더 중요합니다. 예를 들어서
+암 진단 예측 모델을 만들었다고 가정해봅시다. 진단에서 1종 오류는 '실계 암이 아닌데 암에 걸
+렸다고 진단한 경우’입니다, 2종 에러는 '실제 암에 걸렸는데 아니라고 진단한 경우'입니다. 1종
+오류에서는 추가 진단이나 치료 과정으로 곧 암이 아님을 알게 될 테니 큰 문제는 아닙 니다, 반면
+2종  오류는 환자가 암에 걸린 사실을 모르고 지내면서 병이 악화될 겁니다. 심지어 치료 시기까지
+놓칠                                                               수도 있습니다, 이런 경우는 2종 오류가 훨씬 중요합니다,
+
+음성인데 양성으로 핀더했으니까
+
+1 종오釋
+거짓 양성
+
+
+암매길런 사한(망성｝
+
+당신은
+건강합니다
+(윤성).
+
+양성인 네 음성으로 판단했으나까
+
+2종오류
+거짓 용성
+
+그렇다면 스뱀 문자에서는 어떨까요? 기획 의도에 따라 결정됩니다, 1종 오류에서는 스팸이 아닌
+데 스램으로 분류된 경우임니다. 스램이 아닌 중요 문자가 필터링될 수 있는 거죠, 2종 오류는 스
+
+238 2단계 답쯧 앙척춰Of 하合하는 지도학合 앙교2|습
+
+
+램인데 스탬이 아니라고 잘못 분류한 경우입 니다. 스램을 받게는 되겠지만 중요한 문자가 차단될
+확률은                                                             낮아질 겁니다.
+
+여기에서 한걸음 더 우}가면 재현을ᄄ011. 정 밀 도Precision p_ 1 점 수F1 와          Under Curve(곡
+선 아쾌 면적) 듬의 개념이 등장하는데, 이는 10장(재현율，정밀도, F-I 점수乂 11장(AUC)에서
+다우겠습니다.
+
+7.8 이해하기 : 나이브 베이즈 모델
+
+나이브 베이즈 알고리즘의 근간은 베이즈 정리입니다. 따라서 나이브 베이즈 알고리즘을 이해하
+려면                                                         조건부확률을 구하는 베이즈 정 리를 이해해야만 합니다, 수식부터 
+알아보겠습니다.
+
+PtA\B) =    P(B\A} P(A)
+
+PtB)
+
+p 는 확 률 을 뜻 합 니 다 ， 즉 . 川^ 는 쇼 가 발 생 할 확 률 입 니 다 . | 는 조 건 부 확 률 기 호 입 니 다 .
+川 XI 산)는 산가 발생했을 때 A가 발생할 확률을 말합니다. 이제 각 항목에 대해 자세한 설명을
+
+하겠습니다,
+
+
+• 厂( XI션) : 사후확률입니다. 公가 발생했을 때. ?!가
+발생할 확률인데. 스램문자의 예를 적용하면 5 라는
+특정 단어가 등장했을 때 ?!가스맨입 확률입니다.
+
+• P ( A ) : 사 전 확 률 입 니 다 . 公의 발 생 유 무 와 관 련 없
+
+이 기본적으로 쇼가 발생할 확률로서. 여기서는 전체
+
+문자 중 스뱀문자의 비율이 되겠습니다，
+
+， P( B\A) : 우도… 내에 흑은 가능도라고도 부롭니
+다. 고가 발생했을 때, 산가 발생할 확률로. 여기서는
+
+스팬 메일인 경우 선라는 특정 단어가 &어 있을 확률
+입니다.
+
+■ P{ 公》: 전체에서 公가 발생할 확률로. 전체 문자에
+
+서 선라는 특정 단어가 뭍어 있을 확률입 니다，
+
+사후확醫
+
+사건 A 와 B 가 있물 때, 사건 A가 발생카
+상S에서                       사거 B가 발생알 확롭
+
+사전확幸
+
+사건 A와 상관없이 사건 B가 발생할 확톨
+
+베이즈 정리
+
+무 확률 변수의 사전확률과 사후확플 사이
+의                      관계물 나타내는 정리로. 사후확■플
+구할때 쓰임
+
+07창 나베이즈 239
+
+
+혹시나 위의 설명이 잘 이해가 되지 않는다고 해도 괜찮습니다. 이번에는 그림으로 다시 한 번 살
+펴보겠습니다.
+
+독정 단어 X 포함
+
+50%
+
+50%
+
+득 g . f어 X Q 포함
+
+이 예시에서는 전체 문자 중 스팸이 30%입니다. 파란색 영역이 폭정 단어 X가 포함된 경우입니다
+( O + O ) . 스 맨 에 X 가 포 함 된 경 우 는 5 0 % ( ^ 조 ) , 행 에 X 가 포 학 된 경 우 는 1 0 % ( 은 ^ ＞ 입 니
+다, 최종적으로 _특정 단어 X가 있을 때 스뱀일 확률*을 구해야 합니다. 바로 파란 영역 전체 중 빗
+금친                                                              파란 영역의 비율인 거죠그림으로 보니 굉장히 단순하군요,
+
+파란 영역은 전체에서 특정 단어 X가 푿어 있는 경우이므로，수식에서 P( B) 에 해당합니다( O +
+O), 그래서 수식의 분모 부분에 들어 있습니다. 이제 수식의 분자 부분인 빗금친 파란 영역의 크
+기(O＞를 계산해야 하는디I 이 또한 매우 단순합니다, 전체에서 스램인 경우가 30%이고，그중 B가
+을어 있는 경우가 50% 이므로，0.3 x0, 5로 구할 수 있습니다，여기에서 03이 바로 마사가 되며
+
+. 0 , 5 가 P( B\A)7\ 됩니다^은 ) ■
+
+정리하면
+
+• 스램인 경우 f P(A)= (^^)= 0.3
+
+• 스팸 중 특정 단어 X가듄어 있는 경우 : 川 公IX)            =05
+
+240 2단계I 답M 앙러주I야 학슬하te 자도 어含앙고리S
+
+
+• 전체 중 톡정 단어 X가 들어 있는 경우 : 川 公) = (^^戶 (0.3           05) + (0.7 X 0-1) =
+0.22
+
+입니다. 앞의 그림을 이해했다면. 앞서 설명한 조건부확률을 구하는 베이즈 점리 수식이 쉽게 이
+
+
+해될겁니다.
+
+P(A\B) =
+
+P(B\A) P{A}
+
+=
+
+05 x 0.3
+
+次 0.6818
+
+P(B)               0,22
+
+나이브 베이즈는 이처럼 사전확률로 사후확률을 예측하는 조건부 확률을 기반으로 함니다.
+
+학습 마무리
+
+문자 데이터 셋을 이용해 스백 이부를 판단하는 모벨을 만^보았습니다. 이 과정을 되짚어보겠
+습니다.
+
+
+스■문자똘구분하는모
+델을 안■니다,
+
+판다스, 넘파미. 멋플못
+립.             시본 라이브러리률 임
+포IS습니다. 프로책£
+
+나이브 베이즈 »류기률
+사용하여          모델링한 결과,
+98.9%의 높은 정확도봅
+
+
+문자 메시지에 있는 마침표、느■표 등의 _수 기호를
+제거했습니다.
+
+예측에 변별력이 없을 것으로 보아는 S용어콤 세거했습니다. ——f
+문자평 spam 과 ham> 종속변수물 숫자(1 과아로 변경랬 S 니니
+
+S퓨터가 쉽게 이해합 수 았도록, 문장8 각 단어의 카운트-
+기반으로                           벡터화했•니다.
+
+독수기I호제거하기
+
+7.4 醫용어 제거하기
+
+75 픽표 9변 형태 변경하기
+
+7. 카운■ 기반으로백티화하기
+
+07장 나야브 H■이즈 241
+
+
+스택  메일  데이터셋을  나이브  베이즈  분류로  학습해  스램을  예측해보았습니다,  베이즈  정리
+의  확실한  이해를  위하여  위의  설명  내용을  직접  손으로  풀어봅시다，MukinomialNBO  대신
+GaussianNBO,   BernoulliNB(binarize=True＞를   사용하여   모델링해보고   결과를   비교해봅
+시다.
+
+안피 ■
+
+1   나이브 베이즈 분류기 : 조건부확률을 기반으로 하는 모엘로. 자면어와 같이 변수의 개수가 많을
+때                                                     유용합니다,
+
+1 종 오류(Type 1 Error, False Positive): 실제 음성 인 것을 양성으로 예측히는 오류입 니다.
+
+2종 오류(Type 2 Error. False Negative): 실제 양성인 것을 ■&성으로 예죽하는 오류입니다.
+
+4 사후학률 : 사건 A와 B가 있을 때. 사건 A가 발생한 상황에서 사건 B가 발생할 확률입니다.
+
+5 사전학물 : 사건 A와 상관없이 사건 B가 발생할 확률입니다，
+
+6  베이즈 정리 : 두 확률 변수의 사전확률과 사후확률 사이의 관계를 나타내는 정 리로, 사후확률
+을                                                        구할 때 쓰입니다
+
+*   * *rm< punctuation : 특수 기호 목록출력
+
+MultinomialNB() : 다항문포 나이브베이즈 알고리즘
+
+■ n I m巾I stopwords : 불름어 목록
+
+•  s k leam. f eatur6_extractio n. te xt. CountVectorizerf) : 카운트 기반 백터화 알고리즘
+
+1 If ■rr\rrin1rh COnfusion」matrix( ) : 혼동 행렬
+
+■ CQuiir VectDdzer^j vocabulary. : 벡터화 객체에서 단어와 인덱스 확인
+
+242 21단께 답홋않라춰야 학合하학숍 앙고러舜
+
+
+연습 문제
+
+1 자연어 처리에서 의미 없이 빈번하게 발생하는 단어를 의미하는 것은?
+
+O 불용어
+O 톡수기호
+o 벡터
+
+ᄋ 인덱스
+
+2 자연어로 된 문장을 머신러님 알고리즘이 받아둘일 수 있도록, 각 단어와 출현 빈도로 정리
+하는                                                         함수는?
+
+Oget_dumniies()
+
+O CountVectorizeri)
+O StandardScaler()
+
+O value_counts()
+
+3 다음 혼동 행렬에 대한 해석으로 옳지 않은 것은?
+
+에축값
+
+0        1
+
+실   0      64         3
+
+가
+
+1      16       17
+
+O 정확도는 81 %이다.
+
+e 1 종 오류에 해당하는 것은 총 3건이다.
+
+O 양성을 양성으로 예측한 경우는 총 17 건이다.
+
+O False Negative는 총 64건이다.
+
+07집 나이브베이즈 243
+
+
+<1 다움 중 나이브 베이즈 압고리즘을 가장 잘 설명한 것은?
+
+o 조건부 확률을 기반으로 한 알고리즘으로, 사전확률과 사후확률을 활용한다，
+
+O 독립 변수와 종속변수의 선형 관계를 전제로 한다,
+
+O 독립변수의 개수가 적을 때 잘 작동하는 알고리즘이다.
+
+O 독립변수 간의 상관관계가 강하게 나타날 때도 잘 작동한다.
+
+1 정답 ©료융어
+
+2 정답
+
+OgeLAimmiesO    — 더미거수로 변환하는 항수임나다,
+
+O CountVectonzer()    — 단어5 인 딱스와 출현 빈도로 백터화하는 함수입니 다
+公 StaodardScaler()    _ 표준화 스케일링을 위한 함수입니다
+
+Q value=counts()        변수 내 고융값 벋   혓수쯧 확인하& 함수입니다
+
+3 정답 ◎ False Negative는 총64건이다
+
+해False Negatived 심잿값 1, 여축값 0 어! 태례는 부분으로 豆 1 한건임니다
+
+
+“펜 O
+
+O 조간부 화醫S 기반으£ 한 압고리즘으£ 사전려營과 사후확률율 살8한다，
+
+公 독린변수와 총속변수의 선혐관계끋 전제로 안다, - 선형회귀，로자스틱 회구抑| 태당하는 설명입니다,
+
+O 독립변수의 개수가 적육 때 잘 작동하누 임고리즘이다   폭립변수의 개수가 많g 때 상대적으로 더 장 작동
+
+a 내다.
+
+o 적a변수 간의 상관관게가 강하?! 니타날 때도 3 작동현다 - 목릴변수 간의 상관관계가 없용을 전제로 하
+는 일고리즘업니다.
+
+244 2단계 업營압려워야 학含하fe 지도 학숍앙교리g
+
