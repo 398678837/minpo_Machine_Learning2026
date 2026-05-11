@@ -1,0 +1,2901 @@
+Chapter
+
+결정 트리
+
+연봉 예측하기
+
+
+■□ #■MUSTHAVE :
+
+I I 학습목표
+
+트리 보델 계열의 근간인 결성 트리들 하습시켜 연봉을 예측합니다, 모델링에서 발생하는 중요한
+이슈인                                                         오버피팅 개념과 해겹 방범올 알아봅니다，
+
+학습순서
+
+
+[ 82라이브러리및
+a 1문제정의 _J 대이터불라오기&
+
+데이터 학인하기
+
+범주험 네이터
+
+결측치 처리 및 더미 변수 변환
+
+모델링 및
+예축하기
+
+이해하기;
+결정 트리
+
+[결정트리소개
+
+설성 트리Decnon T하는 관측값과 목못값올 연결시켜주는 예측 모델로서 나무 보양으로 데이터블
+분류합니다 수많은 트리 기반 모델의 기본 모델매세 메映|이 되는 중요 보델입니다 트리 기반의
+보델믄 선형 모델과는 전혀 다른 특징을 가지는데. 선형 난-귀이 각 변수에 대한 기울기값들을 최적
+화하며 보델을 만들어나갔다면, 트리 보델에서는 각 변수의 특 성 지 점을 기준으로 데이 터들 분류
+해가며 여!측 모델올 만듭니다. 여!틀 들어 남자/여자로 나눠서 각 목풋값 평균치롤 나눈다거나. 나
+
+이블 하）세 이상/미만인 두 부류로 나눠서 평균치들 계산하는 방식으로 데이터불 무수하게 포개어
+나가고. 각 그昔에 대한 예측치를 만들어냄니다.
+
+▼ TOP 10 선정 미유
+
+예측벽과 성능으로만 따지면 결정 트리 보델올 사용할 일은 없습니다. 시각화가 매우 뛰어나다는
+유일한 상점이 있을 뿐입니다, 하지만 앞으로 배울 다른 트리 기반 모델을 설명하려면 결 점 트리들
+알이야 합니다. 트리 기반 모델은 딥러닝을 제외하고는 현재 가장 유용하고 많이 쓰이는 트랜드이
+
+기| 때문에 트리 보델올 벌수로 알아위야 하니다.
+
+246 2단제 답포 앙려워야 박合아는 지도학& 앙고리系
+
+
+0W 력과 설명력
+
+on력이란 모델 학습을 통해 업아나 좋은  보예주는가s 의미하여, 설w은 학습된 모델을 얼마나 쉽게 해석a
+
+수 있는자물 뜻합니다, 알고라증의 북a도가 중가할수목 o»측력s 좋아지나 설명력은 다소 떨어자는 반비려 관계룰 보여
+京내다. 즉. 단순한 알고리즘일수록 매측력이 상대적으로 떨어질 수 있으나 해석어 용이하여_ 복장한 알고라즘온 이측력
+0| 위어난안§ 해석온 어렵습니다.
+
+결®트리와 회귀 ff석은 상대적으로 하박이 쉬워 설명력이 놀다고 할 수 았으며，9장부터 배물 말고리중둘은 복잡도가증
+가하여                                                                     예축력이 높지만 해석이 어e습니다. 딥러닝 또한 
+매우 북잡한 알고라죽으로 해석이 어러워서 아s 吉랙박스에 비
+유하기도 합니다、
+
+매측력과 설명력 중 어느 쪽g 댁해야 하는지는 상황에 따라 다몹니다 에큰 들어 의학 계열에서 득정 질병의 발병■에 대
+
+한 예측 모s» 한들 때는. 발병톱을 높이거나 억제하는 중요안 요안을 밝하는 «대는 설명력이 @ 알고리즘이 적합힐 수
+있슬니다. 다른 0|로사기거21률 예측하는 모델DI서는 요인보다는 더 정확하게 AM |서래릅 잡아낼 수 있어야 히므로 0»측
+
+력이 높온 알고리즘이 더 적합할 수 있니다,
+
+▼ 예시그래프
+
+
+규칙 노드. 또는
+중간       노드라고 해요,
+
+네이터매 있는 규칙을
+학습을           동해 찾아내
+
+트리 기반의 분류롭 함니다.
+
+
+감이가
+
+3인 트리
+
+상대적 개념으로
+
+A는부오 노드
+
+B 는자신노드
+
+가장 끝에 있는 노드픕
+리프         노드라고 히®.
+
+▼ 장단점
+
+장점                             단정
+
+
+- 네이터매대한 가정이 없는모말니대Non paramet
+
+- 트리가 무한정 김어지면 오버피& 운세를 야기일 수
+
+
+ric Model) 에몰 들어 선평 모말은 장규분포에 대한
+
+있습 내각.
+
+기«0|나 독립변수와 종속반수의 선 g 관재 둥g 가정
+
+- 암으로 배율 발전된 트리 기반 모델듈에 비하연 예측
+
+으로 하는 모델인 반면, 3정 트리는 데이터에 내한 가
+
+력이 상당히 떻어집니다 H
+
+정이 없으므로 어디에나 자유g게 적용할 수 있습니다
+
+- 아웃라이어에영향을 거의 받지 않g 나다.
+
+. 트리 그래프픕 등하i서 직관적으로 이해하고 설명할
+수있                              金니다. 즉 사각화에 굉장히 탁린리니너
+
+OB장 걸징트리 247
+
+
+▼ 유용한곳
+
+• 종속변수가연속형 데이터와 범주형 데이터 모두에 사용할수 있습니다,
+
+• 모델링 결과들 시각화할 목적으보 가장 유용합니다.
+
+• 아웃라이어가 문제될 정도로 많올 때 선형 보델보다 총은 대안이 될 수 있습니다，
+
+8.1 문제 정의 : 한눈에 보는 예측 목표
+
+■신 _산_
+
+데이터 분석가와 개발자 몸값이 하루가 다르게 위어오릅니다, 현재 내 연봉 수준은 적절한 것일까요? 나이, 교육
+수준,                                                                   혼인 상태, 직업. 인종 성a 둥 항목에 따톤 연봉을 
+기재한 대이터셋이 았습니다. 미국은 다인족 국가라서 인
+종 정보까지 있는 점이 톡이합니다. 3정 트리 잃고리즘을 활용해서 연봉 둥급을 나터보겠습니다.
+
+▼ 에추 목표
+
+마션        학력, 교육 연수，흔인 상태. 직업 정보룹 담은 연봄 대이 불 아용해 연봉을 여保하라,
+난이도       *公公
+
+알고리즘     결정 트리 (Decision Tree)
+
+대이터셋 파일명! salary csv                             종속변수  class《연봉 등급 >
+
+대이터셋 소개   이번 장OW는 연봉 데이터를 사용합니다 연봉이 S50.000 이상인지 이하인자틀 0»측하는 것이 목
+표이며. 종속변수는 class. 독립변수로는 학력. 교육 연수、혼인 상돼, 직업 등이 있의■! 다,
+
+문제유형      분류                            평가지표 정학도
+
+사용한 모델    Dec is io n Tree C lass if ie r
+
+사용 라이브러레 • num pv (n um py== 1.195)
+
+• pandas (pandas==1.3.5)
+
+• seaborn (seal於rn==0.11.2)
+
+• matplotlib (matplothb==3.22)
+
+• skleam (scikit-leam*-! .0.2)
+
+매제 코드     . 위치 : colabjesearch.google.cxjm/github/musthave^ ML10/notebooks/blob/main/
+
+* 置|일 : OS^Decision TreeJipynb
+
+248 2던계| 답끊 앙려워아 학亡하는 지£ □감 망고리유
+
+
+8.2 라이브러리 및 데이터 불러오기, 데이터 확인하기
+
+4가지 필수 모듈과 데이터“alaryx'sv) 파입을 불러오겠습니다，
+
+import pandas as pd
+import numpy as np
+
+import matplot lib*pyplot as pit
+import seaborn as sns
+
+file^url - 1 https://media < githubusercontent.com/media/musthave-HiL10/data_source/
+main/salary.csv1
+
+data : pd<read.csvffile.urI, skipinitialspace ■ True) 私 ⑬ I 이티 잇 ? 시
+
+O csv 파일을 불리옵니다， 매개변수 skipinitialspat e는 각 데이터의 첫 자리에 있는 공란을 자
+동 제거합니다. 예를 들어 4 Mal e ' 를 Xal' 로 정리합니다. 이번에 사용할 csv 파일에 불필요한
+공란이                                                             많마서 적용했습니다.
+
+그럼 head() 함수를 실행해 데이터의 전반적인 모습을 살펴봅시다.
+
+data.head()
+
+
+연령
+
+■■  ii ■
+
+MdFkcUss
+
+혼인 상 tT:
+
+가족관게
+
+reUt
+XCrship
+
+S  5^K   ra |
+
+hours-
+
+^er-irceh
+
+I: 본국
+
+rutiw‘
+
+■intry
+
+
+浴-                 11 th
+
+never-
+
+narned
+
+MjChifiE-ap-
+
+O5>pCt
+
+0，，
+
+<hild
+
+*ULr
+
+4«.
+
+United—
+States
+
+
+Harr led-
+
+*ULc
+
+Uhit«-
+States
+
+
+LCKJ ，3마
+
+ASIDE-
+
+HusbaM
+
+Kale
+
+Unitrt-
+St«ei
+
+Pr; vile                    Married*            Hu이iaM            故나
+시! 轉Kt
+
+
+IS.
+
+5■卜
+
+，러6卜
+
+wmed
+
+&■卜
+
+dii Id
+
+3離.
+
+
+교육 연수
+
+〔안종 ■'；： 〔자산 중가  주담 노둥 사간 :
+
+종속변수는 class입니다. uniquet) 함수로 몇 가지 값이 있나 확인하겠습니다,
+
+dataf1 class'J^uniqueO I 고貧B 街인
+
+◎S창 a 정■리 249
+
+
+array([■<=50KP, >50K1]，dtype=object)
+
+50 K 이하와 초과 두 가지만 있습니다, 50 K에서 K는 천 단위를 뜻합니다， 즉 $ 50 . 000 을 기준으
+로                                                           나뉘어진 데이터입니다.
+
+다음은 info() 함수로 변수법 형태를 보겠습니다.
+
+data.info() 화 변수 특정 출력
+
+(class 'pandas■core.frame,DataFrame>
+Data columns (total ]   L4 columns):
+
+Rangeindex: 48842 entries^ 0 to 48841
+
+Column         Non-Null Count    Dtype
+
+
+0  age
+
+1  workclass
+
+2  education
+
+48842
+
+46043
+
+48842
+
+non-매 II
+non-null
+non-null
+
+int64
+object
+object
+
+,       -     ，  표  ᅳ a. 요   대  ᅲ  ■노
+
+V        불 ■여지k그
+
+
+3  education-num
+
+4  oiarita Vstatus
+
+5  occupation
+
+6  relationship
+
+7  race
+
+3  sex
+
+9  capital-gain
+
+10  capital，loss
+
+11  hours-per-week
+
+12  native^country
+
+13  class
+
+48842
+
+48842
+
+46033
+
+48842
+
+48842
+
+48842
+
+48842
+
+48842
+
+48842
+
+47985
+
+48842
+
+non-null
+non-null
+non-null
+non-null
+non-null
+non-null
+non-null
+non-null
+non-null
+non-null
+non-null
+
+int 64
+object
+object
+object
+object
+object
+int 64
+
+int 64
+
+int 64
+object
+object
+
+텍스트로 구성된
+
+、범주형 변수가 많숨니다.
+
+dtypes:    int64(5),    object(9)
+
+memory usage: 5-2+ MB
+
+O o b j e c t 형. 즉 택스트로 구성된 범주형 변수가 많습니다, o N o n - N u l l C o u n t 를 보면 결측치
+가 있는 변수도 몇몇 보입니다、이번 데이터에서는 이런 범주형 변수둘과 결촉치가 있는 변수에
+대한                                                             처리를 해줄 게 많아보입니다.
+
+마지막으로 clescribe() 함수로 통계적 정보를 확인합니다.
+
+250 고단제 답®망격워마 학食하는 지£학슬 앙고리중
+
+
+data-describe() ■ 暴계
+
+
+education—
+
+nun
+
+capital-gadfi     capital­
+loss
+
+hours-
+p'r，，eek;
+
+count      48r842.M     48, 레 的      «kB42.        «,B42.e0    48표M2, _
+ne^n       3SI.64       1B.B8        1,179.07         87.59       1142
+
+ltd        U,71         2,W        7.452^2        403.ee       12.19
+
+nln       17.08        1.的                          1■期
+
+逆舊                9-M          fl, 齡        •.輸     4, ■期
+
+的 X    37J 的的 B         10          e ■■      a   BAElMa            48
+
+
+7務                12          ，  
+
+0■>■ Hx^3신Dw표EI?fWlCh  45
+
+R3M    9e.0eeeeB         16     W■鞠B 的 0     056 HB000         典
+
+o b j e c t 형 의 변 수 가 많 다 보 니 변 수 가 5 개 만 보 입 니 다 . 기 본 적 으 로 d e s c r i b e d 는 o b j e c t 형 의
+데이터를 제거하고 통계적 수치를 보여주지만. 매개변수를 이용하여 object형의 데이터까지 보
+이게 하는 방법도 있습니다.
+
+dat a. describe (include - "alU) 響 object 형이 포함된 동계정보 출력
+
+
+ir     '
+
+■CU년   만녀!■
+
+쑈杜,4버
+
+uritdl»
+
+OUU예Joi             ri■벼
+
+轉세_         M U.베_
+
+ciHtil" cafkHM， mrs* rutiw-
+
+■Jn      UMS ptr        매_야
+
+이鶴 S  4tb4j
+
+
+LFlUjUf
+
+"M      it._                               *._     :L_     J._      iwn       _w        ■       .1  
+   I
+
+
+frills   HS        내
+
+M^r-r lea
+
+tlv
+
+參T_h    Hu&b^ri      ■'會      編 내       ，_M              HUI
+S>£<lAltY
+
+Lhdc 해   (-5義
+9U_l
+
+
+ff •혁
+
+MM*I
+
+Ul           15JUM       WH     22J79M      '，세 _            41.MJ _              •aM       Mh      
+，U_    43&12    ans
+
+Ul       ■                _비_        ■쑈       I내       tUH       IM             ，내        4M    lun
+
+S編               _버       IM      J-5W                 ■       H續               IUI      7«紅_洪      
+      t2;J，UU      ■編   _L，
+
+J5fe    21   4_       Wl      Ml    i           MJl               IM      IhH       IM        6     
+   6            HU，
+
+y_       37              IM        U       lUh       UM      H4M              IM         *       *  
+          _鳴
+
+J5B
+
+■u              Wl      _痛        lb       hit        IM      lu，       Wl      IMI       ■벼        
+       K，      mi    k，
+
+include  매개변수를  사용해  object형까지도  출력했습니다.  O  unique,  top,  freq  행이  추가되
+었습니다.  새로  추가된  행푿은  오로지  object형의  변수푿만을  위한  것이고，기존의  숫자형  변수
+들는  NaN으로  처리되어  있으며.  반대로  object형의  변수들은  mean,  std와  같은  기존의  통계
+
+的창 3징■리 251
+
+
+적 정보가 모두 Na N으로 처리되어 있습니다, unique는 각 변수에서 가지고 있는 고유한 value
+의 숫자입니다. nimique（） 함수를 사용했을 때와 같은 수치를 보여즘니다. top은 각 변수별로
+가장 많이 등장하는 value가 무엇인지를 보여주며. f req는 top에 나와있는 value가 해당 변수
+에서 총 몇 건인지를 보어줌니다. 예를 들어 workclass 변수는 해당 변수에는 고유한 value가 8
+좀류이며, Private이 총 33 , 906 번 등장합니다（ object 변수들을 이런 식으로 실겨보는 방식은
+분석에서 크게 유의미하지는 않으니 참고로만 말아두세요），잠시 후에 각 범주형 변수돝을 더욱
+자세히 확인한 뒤에 전처리하겠습니다.
+
+8.3 전처리 : 범주형 데이터
+
+가장 먼저 처리할 변수는 종속변수인 class입니다. 차후 해석에 혼선이 없도록 50K 이하를 0. 초
+과를 1로 변경하겠습니다.
+
+data["class'] ■ data[fclass'               <=50K : 0，r>50Kf: 1｝） # 1 자로 변?
+
+KBB 사실 이 데이터의 원g메는、=50ic의 a 앞부®에 공란이 하나 포함되어 있습니다、그려서 위의 코드가 제대로
+
+작동하지 않몰 수 있는데. 암서 대이 터톱 S려오는 과정에서 엔 앞자리의 S란& 모두 제거허»주었기 때문에 아우련 이슈 없
+미                                                                        처리할 수 있습니다,
+
+83/1 object형의 변수 정보 확인하기
+
+다몸몬 독립변수의 범주형 데이터를 다무겠습니다. 이 데이터에 변수는 13개뿐임니다, 그래서 어
+떤 변수가 object형인지 쉽게 눈으로 확인할 수 있으나, 변수가 100 개 이상이 된다연 다른 접근
+방법이                                                            필요합니 다，범주형 데이터가 얼마나 있는지 확인하는 방법을 
+알아보겠습니다，
+
+변수의 자료형을 확인하는 코드는 다음과 같습니다，
+
+data[age'],dtype
+dtype（'int64。
+
+age  변수는  int64형의  데이터입니다<objeu형은  object로  출력됩니다）,  fcr문를  활용하며  모
+든                                                             변수의 자료형을 확인하겠습니다.
+
+252     답S 일리숴야 학호하는 자도 학J 않고리S
+
+
+for i in data*columns; 산 Q 十^ I
+
+print(i, data[i].dtype) 1 ■ 컬럼명과 대이터 타입 ■
+
+age int64
+workclass object
+education object
+
+education-num int64
+marital^status object
+occupation object
+relationship object
+race object
+
+sex object
+capital*gain int64
+capital，loss int64
+hours*per-week int64
+native-country object
+class  object
+
+O d a t a x o l u m n s 로 컬럼명을 지정하고 O 해당 변수의 자료형을 d t y p e 으로 확인했습니다， 출
+려                                                             결과는 아직까지 infoO 함수와 크게 다르지 않습니다.
+
+object형 변수 이름^ 별도의 리스트로 모아보겠습니다，
+
+obj_list = [] # 빈 리스트
+
+for i in data.columns: # 순회
+
+if data[i]»dtype == 'object*: # O 데이터타입이 object이면
+obj_list*append(i) # Q 리스트에 변수 이暑을 추가
+
+Odtype이  obfect인지  아닌지를  확인합니  다，object가  맞으연  O  리스트(obijist＞에  추가합니  다.
+그럼 obLBst를 확인하겠습니다.
+
+obj_list # 모아진 변수 학인
+
+[’workclass’,
+
+1 education \
+
+*marital-5tatus1,
+
+1 occupation \
+
+OS장 3정■리 253
+
+
+relationship4,
+race’
+
+sex
+
+native-country1]
+
+8.3.2 전처리할 변수 선별하기
+
+이번에는 각 변수의 고못값 개수를 nunique() 함수를 이용하여 확인하겠습니다.
+
+for i in obj_list: 公 순회
+
+print(i, data[幻 .nunique<)) # O 변수 이름과 고*값 개수 확인
+
+workclass 8
+
+education 16
+marital-status ?
+occupation 14
+
+relationship 6
+
+race 5
+
+sex 2
+
+native-country 41
+
+O 변 수 의 이 름 과 값 의 개 수 를 같 이 볼 수 있 도 록 p r i n t ( ) 안 에 둘 다 넣 어 출 력 했 습 니 다 .
+describe(》로 본 정보와 같습니다, 변수 개수가 상당히 많을 때는 describe) 함수 대신 이와 같은
+방법을 사용하연 간결하게 확인할 수 있답니 다，
+
+범주형 변수를 다룰 때는 더미 변수로 바꾸어 활용하는 방법을 기본으로 생각하는 게 좋습니다,
+이전 장에서 배웠다시피. 더미 변수를사용하면 값의 종류만몸 새로운 변수듈이 생겨나기 때문에.
+값의 종류가 수백 개년 그만큼 많은 변수가 생겨납니다, 필요하다면 수백 개의 변수를 감수하고서
+모델링을 해야 하지만 꼭 필요하지 않다면 변수 수를 줄일 방법을 강구할 필요가 있습니다.
+
+값의 종류가 10개 미만인 변수는 그대로 두고，10개 이상인 변수반 확인하여 조치할지를 검토하
+겠습니다.
+
+위의 코드에 if절을 추가해 unique가 10개 이상인 변수푿만 다시 추려보겠습니다.
+
+for i in obj_list; # 순회
+
+254 2던계| 답끊 앙려워아 학i하는 지도 마습 망고리유
+
+
+if data[i].nuniqu€() >» ■: » 변수의 고覺값이 1B보다 I거나 &으면
+
+print(1, data[i].nunique()) # 향럽명과 고 '값 乂 M
+
+education 16
+
+occupation 14
+
+native-country 41
+
+세   가지   변수(education,   occupationt    native-country)7^   출려되었군요.   각각을   살펴보고
+각기                                                              다른 방법으로 처리하는 연습을 하겠습니다.
+
+8.3.3 education 변수 처리
+
+우선 education 변수의 정보를 value_counts()로 살펴관시다，
+
+data['educationM]+value_counts()         고 8
+
+
+HS-grad
+Some-college
+Bachelors
+Masters
+Assoc-voc
+Uth
+
+Assoc-acdm
+10 th
+
+7th-8th
+Prof-school
+9th
+
+12th
+Doctorate
+5th-6th
+lst-4th
+
+Preschool
+
+Name: education,
+
+15784
+
+10878
+
+8025
+
+2657
+
+2061
+
+1812
+
+1601
+
+1389
+
+955
+
+834
+
+756
+
+657
+
+594
+
+5 的
+
+247
+
+83
+
+dtype: int64
+
+미국의 교육 시스템에 대한 정보라 완전하게 이해하기는 어려울 겁니다. 초중고에 속아는 I〜12
+
+하년까지의 값과. Bachelors나 Masters 같은 학위 이롭듈이 있습니다. 이 경우는 범주형 변수
+
+的장 3청트리 255
+
+
+지만 서열화가 가능하기 때문에 비교적 다루기 쉬운 편입니다, 예를 들어 초등학교를 가장 낮은
+숫자로, 박사학위를 가장 높은 숫자로 나타낼 수 있습니 다.
+
+기본적으로 범주형 변수를 숫자로 대체시킬 때는 주의를 해야 합니다，5.4절 '전처리 : 범주형 변
+수 변환하기(더미 변수와 원-핫 인코딩)’에서 미미 변수를 설명할 때 말씀드렸죠'? 하자만 지금과
+같은 경우는 각 값들의 서밀이 명백하기 때문에，숫자로 바꿔주어도 전혀 문제가 없습니다. 앞에
+
+서 dass를 0 과 1 로 바꾸어주었을 때처럼 map() 함수를 활용하여 숫자로 변경하면 되는데. 공
+
+교롭게도 해당 데이터에는 이에 대한 변수가 이미 준비되어 있습니다, 잠시 head() 함수로 확인
+한                                                           결과물을 다시 보겠습니다.
+
+
+wiuL*“
+
+=
+
+wlul 由乂뻬la#    r*liU
+W                   illSikip
+
+m 繼     네   떼 t.r     떼 11
+hu
+
+roifi _卜
+
+■由 b
+
+hfelJkM
+iitiuiCfY
+
+
+Mftft     lllh
+
+，_몌_，_.
+
+impel   cUU
+
+Uhlt_
+
+BIAU              ■ 轉       _，轉 義.轉           <-4ii
+
+
+1             FT “Mt
+
+^6 IP dtl
+
+離" M■나   Fxivln■卜
+ri山hl，，
+
+HLt幽■■며   ■till*
+
+■d감       ■ .M      ■. _，     MN. ft
+
+LAilil*-   ■
+
+표 Ut，比
+
+
+1            L따 L-，，r 蟲나 K
+
+_T —
+
+모【_          i_r*
+
+ItJbAild    HtlllC               4-齡                     IMLtl표     례
+
+도U 化
+
+
+1 毒‘
+
+U 編       繼   ，ta내  •
+
+(U M벼대,t      사비 c
+
+HjUARiJ    BLMli     編 노     네 齡 錦*t
+
+Uhilitdi-   허，
+
+SliTn
+
+
+4    3，  
+
+S_r
+
+내
+
+14 齡
+
+_r“*d
+
+Ml   Owfi
+
+대;ild
+
+UhlU泰
+
+Nhlfat            ■ -輸
+
+도내 A
+
+<^41
+
+
+Ul     Ml
+
+l.SM*13
+
+WN                   ，■擔     Ml     ■ .«li•田      _、표 2   L2/MPL4M      Ml
+
+
+■Li                Ul      Ml
+
+J! 通                Ml      Ml
+
+었Ak       a?     UH      Ml
+
+83 rw » U coMTirut
+
+WH       R_      Ul            Ul        A        ■        1       내
+
+Wl       ■M     Wl      IM       Ul        ■        ■        轉      Ml    ■，_
+
+1       Wl      ，■德     Wl     ，■故    U，                ■        轉      Wl
+
+O  education-num  변수를  보니  education  정보를  숫자로  표현한  것  같습니다.  기대하는  바서
+럼                                                          서열순인지 확인은 해봐야겠죠?
+
+e d u c a t i o n - n u m 에 어 떤 숫 자 들 이 들 어 있 는 지 u n i q u e ( ) 함 수 를 써 서 발 아 봅 니 다 , 변 수 가 제
+대로 서열화되었는지를 넘파이의 sort(》를 사용하여 오름차순으로 정리해 확인하겠습니다.
+
+np<sort(data['education-num1 ].unique() ) # 고옷값£ 오름차순으£ 확인
+
+array([ 1,     2，  3,      5，  6,   7,   8,   、 10, 11. 12, 13, 14， 15, 16],
+
+dtype=int64)
+
+1   에서부터 16까지의 숫자가 있습니다，각 숫자가 어떤 education값과 매칭되는지를 확인할 차
+례입니다. 기대하는 바는 일대일 매핑인데, 실제로 그렇지 않을 가능성도 염두에 두고 확인을 해
+야 합니다.
+
+256     답놋 압러쉬아 하곳하는 자도 □한 망고라푠
+
+
+1 에 대한 매핑을 확인합시다， e ducat i on - num이 1 인 데이터만 모아서 그중 educat i on 변수
+에 어떤 값들이 있는지를 확인하면 됩니다, 한 번에 한 줄씩 코드를 늘려가며 최대한 쉽게 설명하
+겠습니다.
+
+우선 education-num이 1 인지 확인합니다.
+
+data['education-num1 ] == 1 # 3t0| 1 인        확인i _ True/FalseB 줄력될
+
+0       False
+
+1       False
+
+2       False
+
+3       False
+
+4       False
+
+* V -■
+
+48837    False
+
+48838    False
+
+48839    False
+
+48840    False
+
+48841    False
+
+Name: education-num' Length: 48842, dtype:        bool
+
+1 이면 True 아니면 False입니다. 이 정보를 가지고 인덱싱을 하여. True인 경우반 불러오겠습
+니대즉 1인경우),
+
+data [data [* educat ion-num1 ] == 1] 公 값이 IV1 (True?1) 내? 위디1링
+
+
+_mcl»效  education
+
+nur，
+
+raritil-
+itatus
+
+DCCUMtl^n   rELati
+
+race    3컴■   capital-
+
+capital-
+
+Lo»
+
+hours-
+per -_Mfc
+
+native-
+cowi try
+
+cU»
+
+
+rn   MM    fT 1Vite   Prsrhool    1 W     lurried-
+
+Handlers^
+
+toian-
+
+Hus^nd
+
+tale      l\M     B
+
+4*0  flhilippxne&
+
+
+B     dhf，mae
+
+clearwTi
+
+안c*                    매                           V
+
+
+BU    !!■     Private   Pr 名 th的 I     l.M      Hfver-
+
+Mnried
+
+Faning^
+f fating
+
+Itot-in-
+
+fnily
+
+White    mle    ■、轉      IM      25.»     Mfeiico     ■
+
+
+u»   SM，       ttiV    P 떼h的 I     1-M   Separated        _N   _ia 卜 in-
+
+rviily
+
+White    Rile     ■ «i 轉. H     UniltEd-     ■
+
+
+Jl.M    Private
+
+Pr^ehool    1-M      _ewr-
+
+•arriM
+
+Handlers"
+
+cleiws
+
+_dm-
+rmly
+
+toer-
+[ndian-
+EMiiw
+
+Itole     l-M       IM     25-，■
+
+_di，d-    ■
+
+Strtei
+
+
+UM   19.H     Private   FFMCMWI     l M       擊 ʳ”
+
+■arrifid
+
+FjinXhQ-
+f u h log
+
+_-in-
+Mly
+
+White     tale      IN      B 매       MO              ■
+
+1 ■ *  圖 ■，■       « I I     普 A _■     I I ■       ■ ■품       ft 暑 4     * . A     4 # *    ■ ■普   
+   I S 4     » » 4       ■'ll
+
+
+i關乃     JI    stHe 성마  Preschool      1
+
+■arrinl
+
+Others
+
+servi<e   fwixlv
+
+White     _le      a       a       24     삐 tetf ᅳ     ■
+
+
+새 314     새     Privite   Preschool      ]
+
+Harried-
+c 】v- 5산a use
+
+whe■卜
+
+service             »ite             fl      un       «■       Mnico     ■
+
+
+4a!벼           Frinte   Preschool      1       때 r，
+
+urn«d    service
+
+Wt-in-
+rauljr
+
+_hile   Fenale       0       a       2B     United-     ■
+
+SUtEl
+
+08장 검정트리 257
+
+
+제^^,      *6    Mwrix  PreifhMl
+
+inspct
+
+CH her-
+reutivE
+
+lUck    Rale     9      fl      n   Dmini【aiv
+
+
+3E    Private   Pre>th的 I       1   ot w ted      Othef，
+
+service
+
+■tot-in-
+
+tMilv
+
+Other    Rale       9      s      n     _g【i«
+
+TowS M14 edumns
+
+data['education-num'] = 1 의 결과는 True 아니면 False입니다. °] 결과룰 인덱스에 다시
+넣몸으로써 education-num이 1 인 경우만 불러왔습니다. 이계 판다스에서 가장 기본적으로 필
+터링하는 방법이오니 잘 알아듭시다.
+
+다음은 이 안에서 educat ion 이 어떤 종류가 있는자를 확인하기 위하여 해당 변수를 인덱싱하고
+
+uniqueO 함수를 쓰겠습니다，
+
+<jiata[data[' education-num* ]      1]|[ Education1 ]kynique()
+# education-num이 1 인 데이터들의 education 고ft값 확인
+
+array(|[Preschool'll dtype=object)
+
+견과를 보니 education-num이 1 이년 모두 Preschool입니다, 위 코드는 다움과 같이 해석하
+면                                                   됩니다.
+
+□ Oeducatton-numOlieiS? ᄋ education 변수익 ::          종류물 출력하세요. :
+
+data[data[1 education-num' ]        1] [B educationf ]|. unique ()
+
+이 번에는 모든 숫자에 대해 확인하겠습니다，
+
+for i in np.sort(data[Feducation-num']*unique()): 수이
+
+print(ij data[data[ education-num ] == i][ education ].unique())
+# education-num의 고옷값S education의 고옷값 확인 1 2 3 4 5 6 7 8
+
+1 ['Preschool*]
+
+2 ['lst>4th']
+
+3 [년th-6th_]
+
+4 ['7th-8th']
+
+5 ['9th']
+
+6 rwthj
+
+7 filth']
+
+8 [_12th_]
+
+258 2단？1 단포앙리워야□향마는자£학습앙고2| S
+
+
+9 ['HS-grad']
+
+10 ['Some-college']
+
+11 [’Assoc-voc']
+
+12 ['Assoc-acdm']
+
+13 ['Bachelors']
+
+14 ['Masters’]
+
+15 ['Pro十-schooU]
+
+16 ['Doctorate']
+
+그리고  print  부분에는  해당  education-num의  숫자와.  그에  응하는  education  고뭇값퓽을
+동시에                                                           보여주기 위해서 이 둘을 같이 넣어줌니다,
+
+완전히 우리가 기대했던 형태의 결과입니다，낮은 숫자부터 높은 숫자까지,, 접점 고학력순으로 나
+열되어 있습니다，우리가 하려던 작업이 이미 별도의 변수로 마련이 되어 있습니다，（중복 정보이
+므로） 별도의 작업 없이 기존 변수를 drop（） 함수로 제거시김니다.
+
+data,drap('education't axis= j inplace= True)
+
+8.3.4 occupation 변수 처리
+
+다몸은 occupation 변수를 살펴보겠습니 다.
+
+data[ * occupation * ] < value_count5（） # 고貧값 着현 민도 확인
+
+
+Prof-specialty
+Craft-repair
+
+Exec-managerial
+Ad^-clerical
+Sales
+
+Other-service
+Machine-op-inspct
+Transport-moving
+Handlers-cleaners
+Farming-fishing
+Tech-support
+Protective-serv
+Priv-house-serv
+
+6172
+
+6112
+
+6086
+
+5611
+
+5S04
+
+4923
+
+3022
+
+2355
+
+2072
+
+1490
+
+1446
+
+983
+
+242
+
+的창 걸청■리 259
+
+
+Armed-Forces            15
+
+Name: occupation^ dtype: int64
+
+다양한 직업군이 표기되는데, 이미 비슷한 직업군끼리는 묶인 상태로 정리된 데이터로 보입니다.
+예를 뭍어「arming과 f ishing이 하나의 이름으로 묶여 있습니다. 유사한 직업군끼리 묶여 있지
+
+않았다면 이를 몸는 작법을 하려했으나 이미 정 리가 되어 있고，각 직업 간의 서열이라고 할 만한
+부분도 딱히 정의할 수가 없습니다, 더미 변수로 변환을 하면 변수 M개가 생기겠군요， 그 정도
+
+면 감당할 수 있는 수준이 니 법도의 작업을 하지 많고 나중에 더미 변수로 처 리하겠습니다.
+
+8.3.5 native-country 변수 처리
+
+마지막으로 nadve-country 변수를 살펴보겠습니다，
+
+data[^ative^country1].value_counts() *
+
+United-States                   43832
+
+Mexico                          951
+
+Philippines                       295
+
+Germany                        206
+
+Puerto-Rico                      184
+
+Canada                         182
+
+El-Salvador                      155
+
+India                           151
+
+Cuba                           138
+
+England                         127
+
+China                           122
+
+South                          115
+
+Jamaica                         106
+
+Italy                            105
+
+Dominican-Republic                103
+
+Japan                           92
+
+Guatemala                        88
+
+Poland                           87
+
+Vietnam                          86
+
+Columbia                         85
+
+Haiti                            75
+
+Portugal                          67
+
+260 2단■ 답포압러취야학舍하fe 지도학습 SI고리S
+
+
+Taiwan                          65
+
+Iran                             59
+
+Nicaragua                        49
+
+Greece                          49
+
+Peru                            46
+
+Ecuador                          45
+
+France                           38
+
+Ireland                           37
+
+Thailand                         30
+
+Hong                            30
+
+Cambodia                        28
+
+Trinadad&Tobago                   27
+
+Outlying-US(GuannllSVI-etc)           23
+
+Yugoslavia                        23
+
+Laos                            23
+
+Scotland                         21
+
+Honduras                         20
+
+Hungary                          19
+
+Holand-Netheirlands                  1
+
+Name: native-country, dtype:       int64
+
+수많은 값이 있습니다. 그리고 훅이사항으로 United- Stmes가 압도적으로 큰 비중을 차지합니
+다, 그럼 해당 변수를 처리하는 여러 방법을 살펴봅시다 우선 이 경우는 U n i t ed- Stat es가 약
+90 % 를 차지하고 있기 때문에. 아주 단순하게는 United- States 이외의 국가들을 하나로 묶어
+Others 같은 이름으로 변경하는 방식도 가능합니다, 데이터가 간소화되는 장점이 있으나. 그만
+큼 정보가 줄어드는 단점이 있습니다. 만약 해당 예측 모델에서 United- States가 아닌 국가 사
+이에 큰 차이가 없다면 어 방법을 써도 무방합니다. 또 다른 방법으로는 비슷한 값둘찌리 묶는 겁
+니다. 예를 쫄어 지역별로 쭉는 거죠. 족 N orth America, South America, Asia 등과 같이 구
+
+분할 수 있습니다 이 방법 또한 해당 지역에 속한 국가끼리 어느 정도 유사성을 보여야 무리가 없
+습니다 여기서 말하는 유사성은, 종속변수의 값에 대한 유사성을 의미합니다. 즉 국가별로 class
+에 대한 평균값을 내었을 때, 만약 Asia 국가돌이 다소 비슷한 수치를 보여준다면 이렇게 묶는 데
+에 큰 무리가 없을 겁니다， 유사성은 처음에 말한 United- States 이외의 국가둘끼리 묶는 때도
+필요하니 국가별로 class값의 평균을 확인해봅시다.
+
+국가법 평균을 확인해야 하기 때문에 nroupbyO 함수를 사용하여 국가별로 묶어주겠습니다，
+
+애창 감청트리 261
+
+
+함수명       설명
+
+9roupby() groupby 뒤의 괄호 안매 묶어줄 변수 이몸을 넣으시면 되는데. 여기까지만 쓰면 아우런 아웃풋도 없
+습니다，반드시 그 뒤에 추가 연산을 늘여야 합니다. 판다스에서 제공하는 sum()r mean(). 5td() 같
+은 명령어룰 사용할 수 있습!니다.
+
+data.groupby('native-country’)*연산()
+
+우리는 국가벌로 class의 평균값을 볼 것이기 때문에 meant) 함수를 사용하겠습니다.
+# 아래 코드는 창고용이으로, 실행함 필요가 없습니다.
+
+data.groupbyCnative-country1) -mean() fl J. - 지균 ，｛나
+
+여기까지만 코드를 작성해도 원하는 아웃풋을 볼 수 있으나，국가가 너무 많마서 쉽게 눈에 들어
+오는 상황은 아님 니다. 같은 지역에 있는 국가들끼리 비슷한 수준의 class 평균값을 가지는지를
+확인하는 것이 목적이므로 지역 고은 class 기준으로 정렵시키겠습니다. 이 데이터에는 지역에
+대한 변수가 없어. class 기준으로 정렵시키겠습니다，
+
+data. groupby(1 native^country1) ,mean(), sort_values(1 classr)
+
+# 그룹별 평균 계산 후   class 기춘0로 오름차순 정릴
+
+native-country          age           education num   capitabg^in        capital-loss       
+hours-per-week      class
+Holand                                                                                   
+Netherlands      32 ■_          10. _I0_                                                 o ₄ 했VU예 v
+
+GuatemaU            32_ 的 關 的     63_1B                     184136M        36.715909         r 於_i
+
+
+Outlyi 매，US【Gua 누
+
+USVI-etc)
+
+38.826087      1屬,0幻.7B                   개. 的86苑       41,347106         B. 043478
+
+Calurbia             39.458824      9.25期 24      U5-3647M        S5«247V59       39.9 次412        
+IMM7V59
+D매 inican ■ R 히pu—bUc  37.970874       7.3»3tt       1064.4SOI1       約.ft291然       41.6213S9      
+   •.MBS44
+Mexico              33.635121      «.026288      41S.9547M       iffiSfilSl          4B.2134顯       
+  0.049422
+Nicaragua            36.285714      良 0_00       138.653&S1       69.938776        36.9JB776        
+ ».«ei224
+El-Salvactor           33 38 的 的     6.722581       392a76im         36367742        36.361290      
+   0.070968
+Trinadad&T         必bago       39.2592S9      &.M2963       116.18S1&S       156.518S19       
+3B.8BM89         0.074074
+Vietnam              34.616279      9.616279      W 제          86372093        37J7SM4         
+•■1395
+Laos                35.217391      8.82SIB7       125.4W83        75.652174        39.39130*        
+ B.066957
+
+iPeru               36.434781      9.的齡87 薦.，M3 雜       40.173913        3S.5434J8         0,0的的 7
+
+Honduras             3S..A5MM      135期애      ?S, 회애，       1S2.，_                          e.  
+Puertc-Rico           19.864130      8,331522       335-3478M        M4.777174       39.016364      
+   ，.■的6
+
+Haiti                38.的M 轉      a.533333      297.626667 弼.2_轉         M.92S_          • .1，的
+
+Ecuador             37.66666?      9.244444      크2B.2S88■엔 必경必 me        39.266667          
+A.133333
+
+262 2단겨| 답욧 앙척춰Of 학습하는 지도학습 앙교2| 극
+
+
+Jamaica              37.M15M      9.811321       49S.91S_         U, 明1887        39.1M377         
+0.141509
+Scotland             46.761905      10.190476      246.571429       •.eeme        41.666667         
+0.142BS7
+
+Thailand             於 ■的的 67     10.833333      2«, 266667       49.5«00&0        W_7_00         
+B.166667
+
+South               38.書於的2      1A.7的 2量 7                   □4.269S65       42.的2174         
+ft.173913
+Portugal              4i.23am       6.76UM        20J.4t2MS 的•       42.23m6          0.179104
+Poland              42.758621      ■'_9的       471.91954#       70.390805        37.689655         
+驗,195雜2
+
+flkiited-States 炎. 6986轉     10.168657      1089.626521      &8.789743 石，T「      B. 243977]
+
+Cuba               44,355072      醫          470,5434TA       62,7173하 雜.1，      0.246377
+
+Hong               34.233333      10.433333                   2SS.466&G7       40.2&6€O         
+0.266&67
+
+GeniBiiy              38.8MW2      10.927184      ■2J5B252        61,456311        • 815534         
+B-281553
+
+Pfiilwines             39.633898      10.722014      150B.823729 抑, MMM        39.620339        
+0.2&8136
+
+China               41.S52459      n.2«2m        1 的 7,7377的     170.655738       3B.262295         
+0.295082
+Irelafid               38.44HB6      9.7B3784       494/7837&4       ^6.189189        42.4J2432 
+會,297297
+Hungary 的. 368421                 49B.315789       87.789174        37-947368         »s315789
+
+Cambodia                        9.392057       697.464286       齒 4.於 1429       42.I3S714         
+0.321429
+
+Italy                4S .41W8      fi.790476       797.O523B        52.638095        40.942SS7      
+  修.323811
+Canada              44.MM51      H 的갰齡      1233.50M95       131.159341      ■ ■錄的 93        B 
+346154
+Japan               37358696      11.423913      lfi74nSM9S7       59.445652        42.282609       
+  0.347B26
+
+Yugoslavia            ■，시8261     醫 _MU_       ■ 391WI                       <0.217301         
+0.347B26
+
+Greece              45,836715 書제 02        1UUB_          174.857143       46.897炎9         BJS7347
+England              40,改755,      1K110236      im. 炎 ■         ■醫 133B6       41 <937608        
+B.37N79
+Iran                38.372881      12.184441      149必          124.466780       42.949153         
+0.372B81
+Taiwan               M,184filS      B.27C923      1943, 애         121.47023                      
+0.則健的
+
+
+India
+
+，，隱
+
+Hr rance
+
+그
+
+38.M4ZM      12.536424      319€,398728      115.417219                      1.410596
+
+-
+
+40.J1S7B9                 417.4736&4       17.052612        42.7BM74         0.421053]
+
+우 선 다 른 국 가 끝 을 O t h e r s 로 묶 어 줄 수 있는지 O U n i t e d - S t a t e s 를 먼저 찾아보겠습니다。
+c lass 평균값은 약 0 . 24 입니다. 그리고 다른 국가들은 United- States의 평균값보다 크거나 작
+아서 전여 비슷하지 않은 양상입니다. Others로 묶는 방법은 좋지 않아보임니다. 그럼 지역별로
+묶어줄 수 있는지 보겠습니다. class 평균이 가장 높은 O France 중심으로 유럽 국가를 찾아보
+겠습니다. 극단적으로 다른 경우만 몇 개 발견하면 해당 방법이 좋지 않읍이 증명되기 때문에. 수
+치가  낮은 쪽에 유럽 국가가 있는지를 보는 게 빠름니다. 가장 낮게는 I ioland가 있지만 관측치가
+1 개밖에 안 되므로 고려하지 않아도 될 것 같고， 그다음으로는 Portual이 0 . 18 정도로 France
+와 상 당 한 차 이 를 보 입 니 다 . 다 른 지 역 의 예 로 C u b a 와 D o m i n i c a n R e p u b l i c 도 각 각 0 . 2 5 와
+0.05로 큰 차이를 보입 니다. 물론 다른 많은 나라는 지역별로 비슷한 양상을 보이기도 하지만 큰
+차이를 보는 경우가 많으므로 지역변로 묶는 방법은 적합하지 않습니다.
+
+그럼 더미 변수를 사용하지 않고 각 국가명을 숫자로 변환하여 하나의 변수를 그대로 유지하는 건
+
+M창 걸징■리 263
+
+
+어떨까요? 제가 처음 더미 변수를 설명할 때. 범주형 데이터를 무작정 숫자로 치환하여 모델링하
+는 방법은 결코 좋지 않다고 설명드렸습니다. 그러나 이러한 방법이 허용되는 경우가 있는데, 바
+로 트리 기반의 모델을 사용할 때입니다, 트리 기반의 모델은 연속된 숫자둘도 연속적으로 받아들
+
+이기보다 일정 구간을 나누어 받아들이기 때문에. 트리가 충분히 깊어지면 범주형 변수를 숫자로
+바꾼다고 해도 큰 문제가 없습니 다.
+
+범주형 데이터를 숫자로 치환하는 여러 방법이 있습니다, 기본적으로는 랜덤하게 번호를 부여하
+는 겁 니 다 . 예 를 둘 어 U n i t e d - S t a t e s 는 L P e r u 는 2 . G u a t e m a l a 는 3 등 임의의 번호를 붙여
+주는 거죠， 단순한 라벨링으로 생각하면 됩니다. 또 다른 방법은 우리가 value_counts() 함수로
+확인한 숫자둘을 부며하는 방법입니다，이 방법믄 종속변수민 class가 이민자 수가 많은 국가민
+지 적은 국가인지에 따라 유의미한 차이를 보인다면 더 유용한 변수로 활용이 될 것이고. 그렇지
+못하더라도 최소한 라벨링 효과는 가지고 가게 됩니다. 단, 라벨링의 목적반으로 이 방법을 사용
+
+할 때에는 같은 값을 가지는 국가가 없는지 확인해야 하며. 이 데이터의 경우는 동수인 국가듈이
+있어서                                                           적합하지 않습니다.
+
+마지막은 우리가 groupby() 로 확인했던 class의 평균값을 넣어주는 방법입 니다, 이는 조금 극
+단적 인 방범 인데. 예상하려는 목풋값을 독립변수의 일환으로 반영하기 때문입 니 다. 즉, 답을 거 의
+밀어넣다 시피해서 모델링하는지라 오버피팅 문제가 발생할 수 있습니다. 오버피팅 문제는 잠시
+
+후 매개변수 튜닝에서 더 구체적으로 다루겠습니다,
+
+'native-counry'년로 class의 평균값을 구하는 코드를 작성하겠습니다.
+
+country_group = data*groupby(dnative-country').mean() [ 'class']
+
+# 그SS class의 평균값올 계산하여 저장
+
+앞서 작성한 코드에서 정렬에 사용한 sort_values() 함수를 배고_ 인덱싱을 추가해 class값반 취
+했습니다. 그리고 아웃풋을 country_바oup이라는 이름으로 저장했습니 다_
+
+이렇게 평균값을 구해놓은 판다스 시리즈를 기존 데이터에 새로운 변수로 붙여넣어야 합니다.
+
+join() 이나 merneO를 사용할 수 있는데 이번에는 merBe(＞를 사용해서 데이터를 합치겠습니다t
+
+264 고단계 답營앙려춰마 학會하는 지£학含 앙고러H
+
+
+함수명      설명
+
+reset,       두 데이터프래임몰 하나로 이어주는 함수입니다,
+
+index()
+
+a.merge(b) ft II:기L a와 11|이니 bg ! r
+
+국가 이름이 키값이 되어야 하는데 현재 country_group에서 국가 이름은 변수가 아닌 인덱스
+에                                                           자리하고 있습니다, reset_index()를 써서 변수로 벨 수 
+있습니다.
+
+합수명       했
+
+merge()      판다스 대이터 프레일과 시라즈에서_ 인맥스에 들어 있는 정보들 별도의 변수로 轉©니다,
+
+sample = pd*OataFrame({ 'var^l': [3,5, ； ]₇ var 2':[2,4/ ]}^
+index = ['a'/b*/c']) # Q
+
+sample-reset_index() Q
+
+var_A    var_B var J：
+
+0       a       10       2
+
+1       b       39       7
+
+2       c       50        8
+
+3       d       70       9
+
+4       e       90       0
+
+O 임의의 데이터 프레임 2개롭 만둘었습니다 O mergeO물 사용하여 데이터콤 합쳤고. 차동적으
+로                                                          두 대이£|프레임에 공■으로 종#하는 반수인 var» 기준으로 
+합처집니다、
+
+resetjndex()를 써서 인덱스를 변수로 배주겠습니다，
+
+country .group * count ry^giroup. reset_index() # 인덱스 ■ 변수로 불러냄
+
+이제 tountryjaoupO을 확인하변 다음과 같은 데이터프레임을 확인할 수 있습니다,
+
+country_group # 데이터 확인
+
+的창 걸징■리 265
+
+
+native-cmintry
+
+d    Cambodia
+
+1    Canada
+
+2    Cihina
+
+3    Columbia
+
+4    Cuba
+
+5    Dominican- Republic
+
+5    Eciiador
+
+7    El-Salvador
+
+8    England
+
+9    France
+
+10   Germany
+
+11   Greece
+
+12   Guateflala
+
+13   Haiti
+
+Ho land-lie tlwlaads
+
+15   Honduras
+
+16   Kong
+
+IT   Hungary
+
+IB   India
+
+19   Iran
+
+20   Ireland
+
+21   Italy
+
+22   Jamaica
+
+23   Japan
+
+24   Laos
+
+25   Mexico
+
+26   Nicaragua
+
+27    Out ly ing-US (Guan - USVI -etc)
+2B    Peru
+
+29   Philippines
+
+쌨  Poland
+
+31   Portugal
+
+32   Puerto-Rico
+
+33   Scotland
+
+34   South
+
+35   Taiwan
+Thailand
+
+37   Triftad^dATobago
+
+38   United-States
+
+39   Vietnan
+
+離  Yugoslavia
+
+class
+0.321429
+
+0.346】스4
+
+295082
+
+0.047059
+
+0.24^377
+
+0.048544
+
+•-133333
+
+0.0 7 9% 8
+
+0.370079
+
+0.421故3
+
+0.281553
+
+0.367347
+
+0+034t91
+Q.12030B
+&.  BGOOB
+
+0.100000
+
+0.266667
+
+響，3157的
+繼, 痛 1的96
+0.372861
+
+0.297297
+
+0.323810
+
+0.141509
+
+0347826
+
+0,086957
+
+-分*9422——
+0.06024
+
+0.043478
+
+0.086957
+
+0.288136
+
+0.1954B2
+
+0.179104
+
+0,108696
+
+0,142857
+
+0,173913
+
+0.400000
+
+0,16的67
+
+0.074074
+
+0.243977
+
+0.081395
+
+0，347826
+
+인박스였는OL
+변1수가 되었습니다.
+
+266 2단계 답S 압러줘야 학습하^ 지£ 학습 압고리H
+
+
+이제 merge()를 사용하여 두 데이터를 합치겠습니다.
+
+data = da t a, merge (coon tiry^g roup, on = ■ native-count ry\ how='left")
+
+轉 data와 countryjr에p울 native^country 기준으로 3합 (left join)
+
+data  국가  이름은  기준으로  하여  countryj江oup을  붙이는  형태이기  때문에  data를  메인으로
+삼아  mergeO를  실행했습니다、키값은  native-country,  견합  형태는  왼쪽  조인(3.1.8절  '데이
+터프레임                                                            합치기'》으로 처리해즘니다.
+
+그럼 데이터가 잘 합쳐 졌는지 data를 불러서 확인해봅시다,
+
+data # 데이터 4|인
+
+
+_nrkc
+
+ti 매*
+
+nmi
+
+ra，rit«il-   occuᄍ
+dtlon
+
+reUti   race     sei.
+cnship
+
+cap
+Hal-
+
+gain
+
+updtal-
+
+UM
+
+hours，
+per，田杜
+
+natire-
+c_讀『，
+
+class.    cl«i_y
+
+X
+
+
+a    25    ，Hv*U     7      Me ver-
+
+urried
+
+1    18    Private     9       _rrUd-
+cU-sp-ouse
+
+ftochiw-
+
+머ᅡ imfKt
+
+Faminig-
+fUMnfl
+
+0_，ch“d   Black     neU      t        •        4,   iMit'tl!，
+
+States
+
+Huaba매   White     ftate      t       »       SI   Uni t«l:-
+
+Stites
+
+•   •.24397T
+
+•   1.30177
+
+
+1   2»
+
+LKAI，
+
+12    Warried-
+Clv-SpdLIlB
+
+Prate
+ctiw=
+lerv
+
+Hu!내NM   Mhite     _le      1       •       4»
+
+United-
+States
+
+1  • J 4397 7
+
+
+3    44     Mwte     1»     Warrieiib   Machine-
+
+머？，iwct
+
+Mussel   Black            ■        •       4»   United-
+Stitei
+
+1   1243977
+
+
+Mever-
+
+4    li       ■     W      worried
+
+MN 效•네hi I d   Mhite    fewte      ■        •        3,   United-
+
+States
+
+， •-243977
+
+III    _ . -     « « «               III       1 I I      ■ I ■-   •，. _l   '■ ■_ «     1 I I       
+i* ■-     i* ■- ■-     1 I ■    I* ■' I      1 I ■
+
+
+Karried-
+
+■n    27    PriwiU     u   eiv-s，0g«
+
+4編】繼    4«    Private           worried-
+elv-spcy»
+
+T«h-
+
+iupptirt
+
+RacMne-
+&p卜inipct
+
+United-
+
+Mfiite    rewh              •       薦    States
+
+Muatend    _ite     ftale      ■        •       4»   United^
+
+States
+
+> •.24397?
+
+1   •.241977
+
+
+ihh—
+
+앴    Private                    ctertttl
+
+Unmarri^   ktiHe    fewh              •       49   United-
+States
+
+
+Mner-
+
+22   Private
+
+rried
+
+MB-
+
+elcrlul
+
+tavchild          Kate      t        •       21   United^
+Stite&
+
+1   I.24M77
+
+
+40041    52    $e-y-
+
+Mp-inc
+
+9    Warried-
+civ-Sbpou^E
+
+tXS艾서Hana
+
+qcrial
+
+MLfe   _lt，    Fenth   15*24        •       4t   United^
+
+States
+
+1   U4397T
+
+48842 row?«14 columns 广广    1
+
+（、、새로 생긴 변수 i
+
+합쳐지기는  했는데  문제가  하나  발생했군요,  class_x와  class_y라는  변수가  생겼습니다,  기존의
+data에  class  변수가  있고,  country_group에도  class  변수가  있다  보니，컬럼  이름이  겹치는
+바람에  판다스에서  자동적으로  변경시켜버렸습니다,  우리는  class_y를  국가명  대신  사공해줄 것
+이기  때문에  기존  native-country를  삭제하고  elass_y를  해당  이름《native-country)으로
+바꾸고 一 class_x를 cl ass로 다시 변 경 해주겠습니 다.
+
+08창 걸징트리 267
+
+
+data-dropf native-country\ axis아, inplace=True) 우 시:
+
+data = data - rename (columns^ {'class^x*: class’, _classjf: Native-country1})
+
+# 변수 이暑 변환
+
+여기서 컬럼 이름을 바꾸는데 renamet) 함수를 사용했습니다， renamet) 함수는 위에서 보시
+는 것처럼 변경할 대상(columns 혹은 index}울 지정해주시고 구체적인 변경 사항은 딕셔너리
+형태로                                                          매핑해주면 됩니다.
+
+함수명       설명
+
+renarneO      대0|터프레임의 변수나 인맥스 이롬을 변경합 수 있습니다. 변경하러는 이룸과 변경 후의 이롬을 덕
+서너리 형대로 넣어주시면 원니다.
+
+# o 데이터프레임 생성
+
+sample   =   pd.[)ataFrameG(_var_l.   :[3,5,7],   'var_2r:[2,4,6]},
+index                                                = [a,/br/c,])
+
+sample, rename (columns = {'var_l*: 'var_new'}) !，ᄋ 1 - 변기
+
+var_new var_2
+
+a    3  2
+
+b    5  4
+
+c    7  6
+
+O 변수 이콤이 var.l，var_2인네이터프레임을민§니디.
+
+ᄋ varj을 var_new로 변경합니다. 이때 변경 전후의 이몸온 딕서너리 링태로 입력합니다. 변수가
+아년                                                      인액스 미롬을 변경하려면 columns QJ신 index폴 사용합니다.
+
+8.4 전처리 : 결측치 처리 및 더미 변수 변환
+
+결측치를 처리합시다. 먼저 결측치가 있는 변수&과 그 비율을 확인하겠습니다，
+
+dataasna().mean() # »촉치 비율 확인
+
+
+age
+
+■rkclass
+
+0-000000
+
+0,057307
+
+education-num 0.000000
+
+268 2단께 답홋 압려취야학合하feX도 학슬 앙고러舜
+
+
+marital-status      0.000000
+
+occupation        0.057512
+
+relationship       0-000000
+
+race             0.000000
+
+sex             0.000000
+
+capital-gain       0-000000
+
+capital*loss       0.000000
+
+hours-per-week    0.000000
+
+native-country     0.017546
+
+class            0.000000
+
+dltype: float64
+
+송 3개의 변수에서 견측치가 보입니다， workchss와 oc乂upation몬 약 5%, native- country
+는 1. 7% 정도입니다. 우선 native- country는 각 국가별 class의 평균값으로 대체한 상태입니
+다. 원래는 범주형 변수이기 때문에 평균치로 채우는 것이 볼가능하지만 지금은 숫자로 바뀌었고
+그 숫자가마침 class의 평균값이기 때문에. meant) 이나 median() 으로 결촉치를 채우는 것도
+
+가능합니다. 또는 완전 별개의 숫자를 지정하여 채워주는 방법도 가능합니다. 보통 결측치를 숫자
+로 채워줄 때 -9나 -99와 같은 임의의 숫자를 사방합니다. 이렇게 임의의 숫자를 채워주는 것은
+트리 기반 모델에서는 큰 문제가 없으나 선형 모델에서는 데이터의 왜곡을 불러오니 주의해야 합
+
+니다. 지금은 두 가지 방법 모두 가능한데. 여기에서는 -99를 채우겠습니 다，
+
+data[rnative-country'] = data[1 native-country'].fillna(-99)                      iii ■ 시
+
+workdass와 occupation 변수는 모두 범주형 변수이기 때문에 평균치로 해결할 수가 없습니
+다. 이 경우는 톡정 렉스트를 채워주거나. dropna()로 해당 라인을 제거해야 하는데, 우선 각 컬
+럼의 value_counts() 출력물을 보고 판단하겠습니다，
+
+data[ workclass ] + value_counts() JL ■.：      '/ .     : ,
+
+Private            33906 0
+
+Sei 卜 ■p，not-inc      3862
+
+Local-gov           3136
+
+State-gov           1981
+
+Self»enip*iinc        1695
+
+Federal，，          1432
+
+oes 3정트리 269
+
+
+Without-pay           21
+
+Never-worked         10
+
+Name： workclass, dtype： int64
+
+workclass에서는 O Private 비율이 압도적입니다. 특정 값이 대부분을 차지하는 경우라면 해
+당 값으로 결측치를 채워주는 방법도 무난합니다, Private이 70% 정도라서 조금 아쉬운 부분은
+있지만,                                                              연습 차원에서 이 값으로 결측치를 채워넣 겠습니다.
+
+data[  'workclass1]  =  data['  workc  lass'J.fiUnat1   Private1)
+#                                              a 촉치 ■ Private으로 대체
+
+다몸으로 occupa니on 걸 □을 할인하겠습니다.
+
+data["occupation1 ].value.counts() # 고聲값繼 *현 빈도 확인
+
+Prof-specialty        6172
+Craft-repair          6112
+
+Exec-managerial     6086
+
+Adm-clerical         5611
+
+Sales              5504
+
+Other-service        4923
+
+Machine-op-inspct 3022
+
+Transport，公   ving   2355
+
+Handle rs -cleaners 20 72
+
+Farming-fishing      1490
+
+Tech-support        1446
+
+Protective-serv        983
+
+Priv-house-serv 242
+
+Armed-Forces 15
+
+Maine: occupation, dtype: int64
+
+이번에는 어떤 특정값이 압도적으로 많다고 하기가 어렵습니다. 이런 경우에는 알맞지 않습니다,
+변도의 태스트 Unknown’으로 채워보겠습니다.
+
+data['occupation'] = data[’ occupation],fillna(■Unknown')
+#                                    3 측치톨 Unknown으로 대체
+
+270 21단께 답홋않라춰야 학合하학숍 앙고러舜
+
+
+이제 모든 결측치를 해결했으니, 범주형 데아터를 더미 변수로 변환하겠습니다,
+
+data = pd, get .dummies (da t a, drop_first=True) # 더미
+
+8.5 모델링 및 평가하기
+
+모델링에 앞서 이빈에도 데이터를 훈련셋과 시험셋으로 나누어보겠습니다.
+
+from sklearn-model_selection import train_test_split # 임 포트
+
+Xjtrain, Xjtest, yjtrain, yjtest - train.test_split(data<dropCclassaxis^ljj
+data['class#], testjize = 0，4고 randoniLState : 160) 화 훈어셋사I어셋 부리
+
+이번에는  데이터가  비교적  크기  때문에  test_size를  0、4로  높여서  나누었습니다，결정  트
+리  모델은  사이깃런의  tree에서  불러올  수  있는데,  분석  목적에  따라  연속형  변수를  위한
+DetisionTreeRegressor와 범주형 변수를 위한 DeeisionTreeClassifier로 나뉩니다,
+
+여기서는 0과 1을 예측해야 하므로 DecisionTreeCkssifier를사용하겠습니다.
+from                                        sklearn.tree import DecisionTreeClassifier            t
+
+모델링 및 예측 방법은 이전과 같습니다.
+
+
+model = DecisionTreeClassifierC)
+modeLfit(X_train,                   y_train》
+
+pired = modeL predict (X^test)
+
+# 모델 객체 생성
+
+# 학合
+# 예측
+
+的장 길정■리 271
+
+
+Xjrain과 y_train으로 하습해， X_test에 대한 예측값을 만들었습니다. 그럼 이 예측값에 대한
+정확도를 보겠습니 다.
+
+from sklearn.metrics import accuracy.score # 임포i
+acc u ra c y_s co re (y_ tes t, p red) # 정 확도 계 산
+
+0,8134309259354047
+
+약 81%의 예측률을 보여줌니다, 그럼 이제 결정 트리가 어떤 원리로 작동되는지 살펴보고, 이를
+기반으로 매개변수를 튜닝해 더 나은 예측값을 얻을 수 있는지 보겠습니다.
+
+8.6 이해하기 : 결정 트리
+
+결정 트리는 폭정 변수에 대한 톡정 기준값으로 데이터를 계속 분류해가면서 유사한 그룹으로 묶
+어내어 예측값을 만드는 알고리즘입니 다. 예를 들어 다몸과 같은 데이터가 있다고 가정해봅시다,
+
+지름 （독립변수）     종류 （종속변수＞
+
+6              사과
+
+4.5              코
+
+4                로
+
+7                사과
+
+75               사과
+
+사과인지 귤인지를 예측하는 모델을 반든다면. '지름이 5보다 큰가? 혹은 작은가?"라는 질문 하나
+로 이 둘울 명확하게 구분해낼 수 있을 겁니다. 트리 모델은 이런 식으로 특정 기준으로 계속 분류
+해나가는데, 실제 데이터에서는 이보다 필썬 많은 독립변수가 있고，대부분은 종속변수를 완전하
+게 분류해낼 수 있는 값은 없기 때문에. 수많은 분류의 분류를 거듭하게 됩니다，
+
+이번에는 조금 더 복잡한 데이터로 예를 들겠습니다,
+
+272 2단계 답표압러쥐이 박合따는 지도 막合 앙교리S
+
+
+자醫（독«변수 1>     무게 <독립변수 2）    종류 （종속변수》
+
+7.5              320             사과
+
+5               240             사과
+
+7               3 的             사과
+
+6.5              230             복숭아
+
+7               250             복승아
+
+6               200             복숭아
+
+이 데이터에서 사과와 복숭아를 구분하는 모델을 고려해봅시다, 우선 지름과 무게 모두 중첩되는
+부분이 있기 때문에 아까처럼 손쉽게 둘을 구분하는 기준점은 찾기 어렵습니다만, 몇 번의 분류
+작업을 거치면 이 또한 잘 구분해낼 수 있습니다,
+
+사과 3. 복숨아 3
+
+I            I
+
+지용 上 7
+
+NO                   YES
+
+위의 그림과 같이 지름 7을 기춘으로 2개의 그룹으로 나누연 "사과 2. 복승아 T "사과 I. 복숭아
+r처림 뒤섞여 있습니다. 이를 다시 무게를 기준으로 나누면 사과와 복숨아를 완전히 분리해낼 수
+있습니다.
+
+이와 같은 원리 때문에 좋은 모델을 만뭍려면 첫 빈째 분류에 사용할 변수 선정과 기준점 정하기
+가 정말 중요합니다. 그리고 두 번째 분류 과정에서도 각 상황에서 최적의 변수와 기준점을 채택
+해야                                                            합니다. 그림 결정 트리는 어떤 기준으로 명가하여 찾아내는지 
+알아보겠습니다.
+
+08징 검정트리 273
+
+
+8.6.，분류 결정 트리
+
+
+분 류 와 회 귀 는 각 기 다 른 로 직 이 적 용 되 는 데 ， 우 선
+분 류 부 터 설 명 하 겠 습 니 다 . 위 의 예 시 다 이 어 그 램 에
+서  보 이 는  각  회 색  박 스 를  노 드 라 고  부 르 는 데 ,
+
+지니 인악스와 교체 3트로피
+
+노드의 순도품 평가하는 방법. 노드의 순도가
+높을수록 지니 및 엔트로피 값은 낮아집니다,
+
+D e c i s i o n T r e e C l a s s i f i e r 는 각 노 드 의 순 도 가 가 장
+
+높은 방향으로 분류를 합니 다. 순도는 한 노드 안에 여러 종류가 아닌 한 종류의 목못값만 있는 상
+태에 대한 지표입니다. 예를 들어 노드 안에 사과 3개와 복숭아 3개가 있으면 두 과일이 반씩 있
+기 때문에 순도가 매우 낮은 반면，한 노드 안에 사과 3개와 복숭아 0개가 있다년 순도가 높다고
+볼 수 있습니다. 결정 트리는 이러한 순도를 체크하여 가지를 뻗어 나가는데. 이 순도를 평가하는
+
+지표로는 크계 지 니 인덱스G|f11 I때야와 교차 엔트로피Entr’가 있습니다.
+
+지니 인택스
+
+우선 지니 인덱스의 수식은 다음과 같습니다.
+
+n
+
+1 - »)2
+
+•=1
+
+지니 인덱스는 각노드에 대해서 계산되며. P는 노드 안에 특정 아이템의 비율입니다. 예시를 통
+해                                                              위의 수식을 적용하겠습니다.
+
+사과 2, 복아 2’일 때를 계산해보겠습니다.
+
+• 각각 50% 이므로，수식의 우측 부분에 대한 계산은 052 + 0.52 = 05
+
+• 수식 왼쪽 부분을 함께 계산하면 1 - 0.5이므로 0.5
+
+'사과 1, 복숭아 3'일 때를 계산해 보겠습니다.
+
+• 각각 25%, 75%. 수식 우측 부분은 0,25; + O.752 = 0,625
+
+• 수식 왼쪽 부분을 함께 계산하면 1 -0.625이므로0.375
+
+사과 0, 복숭아 4_일 때를 계산해보겠습니다.
+
+• 각각 0%, 100%이므로 우측 수식 부분은 0: +12 = I
+
+274 2단져 EIMST러주I야학슬하teXll도착合업고리S
+
+
+■ 수식 원쪽 부분을 함께 계산하면 1-1 이므로 0
+
+
+이를 표로 정리하면 다음과 같습니다.
+
+에시               비율
+
+n     지니 인딱스
+
+1=1
+
+네
+
+사과 2개，복全아 2개     각각 的%            0.5’ + 0.5? = 0.5       1 -0.5 이으로 0.5
+
+사과 1개. 복숭아 3개     25%, 75%          0.25? + 0.7보 = 0.625   1 -公625이므로0375
+
+사과 0개, 복숭아 4개     0%. 100%            +               1-1 이으로 0
+
+노드가 한쪽 아이템으로 완전히 분류가 잘된 경우（사과 0. 복숭아 4）는 지니 인덱스가 0이며. 전
+혀 분류가 안 되어서 반반（사과 2, 복숭마 2》이 들어 있으면 지니 인덱스가 0.5입니다, 즉, 순도가
+높을수록 지니 인덱스는 낮은 값을 보이며 최댓값은 0,5. 최솟값은 0이 나몰 수 있습니다. 결정 트
+리에서는 지니 인덱스가 가장 낮은 값이 나오는 특정 변수의 특정 값을 기준으로 노드를 분류해갑
+니다.
+
+교차 엔트로피
+
+다읍은 교치 엔트로피 수식입니다，
+
+t=l
+
+몇 가지 예를 들어보겠습니다.
+
+_사과 2, 복숨아 r 일 때를 계산해보겠습니다.
+
+• 사과50%에대한부분:0.5 X L에/0.5） = 0,5 X -1 = -05
+
+• 복숭아50%에 대한부분 : 05 x LoUO S） = 05 x —1 = -05
+
+• 시그마는 위의두 부분에 대한 함이므로一0.5 十 -0.5 - -1
+
+■ 마지막으로 맨 잎의 - 부호를 반영하면 교차 엔트로피는 1
+
+_사과 1, 복숭아 3"일 때를 계산해보겠습니다,
+
+08작 껀정트리 275
+
+
+• 사파 25%에대한부분: 0.25 x M서0,25) = 0.25 x —2 = —0.5
+
+• 복숨아75%에 대한부분: 0,75 x 스쌔/0.75) = 0,75 x -0.415037.., 次 -031
+
+• 시그마는 위의두 부분에 대한 함이므로一0.5 十 -031 = -0.81
+
+• 마지막으로 맨 앞의 - 부호를 반영하면교차 엔트로피는 약 0,81
+
+사과 0. 복숭아 4'일 때를 계산해보겠습니다,
+
+• 사과0%에 대한부분 : 0 x L빠(0) = 0
+
+• 복숭아100%에대한부분: 1 x £^(1) =1x0=0
+
+• 시그마는 위의두 부분에 대한 합이므로 0+ 0-0
+
+• 마지막으로 맨 앞의 - 부호를 반영하면 교차 엔트로피는 0
+
+이를 표로 정리 해보겠습니다,
+
+
+예시      비물
+
+중간 계산
+
+n
+
+£厂.시제 (E)
+
+■frSl
+
+교차 연트로피
+
+■Hl
+
+
+사과 2개.
+북숨아 2개
+
+사과 1개.
+복숭아 3개
+
+각각
+
+50%
+
+25%.
+
+75%
+
+• 사과明%:0.5 x £^x(05) = 0.5 x -1 -
+
+• 복숭이 SO% : 0.5 父 乂세?乂0,5) = 0,5 x — 1
+
+• 시그마는위 두값내한 합 ; 一0.5 + -0.5 = -1
+
+，사과25%:0.25  x  L抑“055)  -  0.25  x  -2
+
+• 복숭아걔% : 0.75 x L，따((V이 - 0.75 x
+
+업 一 0.31
+
+시그마는 위 두값 대한합 : 一＜5 + 一0.31 - -0.81
+
+一 0.5
+
+= -0,5
+
+— _(,.5
+
+-매예
+
+1
+
+약 0.81
+
+사과 0개,    0%.    • 人卜과0%: 0 x        — 0                         0
+
+
+복송아 4개   100%  *
+
+•
+
+목승아 100% : 1 x     I) - t x 0 — 0
+
+시그마는위 두값 내한 합 : (* + 0-0
+
+교차 엔트로피도 마찬가지로 순도가 높을수록 낮은 값을 보이나, 최댓값은 1 까지 나몰 수 있다는
+차이점이 있습니다,
+
+지니 인덱스와 교차 엔트로피 중 어느 로직을 사용하는 것이 더 좋은가에 대한 부분은 딱히 승자
+가 없이. 들 다 결정 트리에서 비숫한 성능을 보여즘니다, 사이킷런의 결정 트리에서는 기본값으
+로 지니 인덱스를 사용합니다(매개변수를 통해 교차 엔트로피로 지 정해줄 수 있습니다》。
+
+276 2단JI 답S 앙러주I야학含하fe 자도박쯧망고리쭌
+
+
+8.6.2 회귀 결정 트리
+
+회귀는 우리가 이전에 배운 MSE를 명가 기준으로 이용합니다，회귀는 연속형 변수를 대상으로
+하는                                                           모델이기 때문에. 새로운 데이터를 예로 들겠습니다，
+
+X                   y
+
+10              98
+
+20              0
+
+35              6
+
+5               44
+
+15              抑
+
+위의 데이터를 대상으로 결정 트리의 첫 번째 노드가 x〉15를 기준으로 나눈다고 한다면, 다음과
+같은                                                                두 노드로 분류될 겁니다.
+
+X
+
+10               98                   20               0
+
+5                44                   35               6
+
+15              的
+
+간단하게 오른쪽 노드에 대해서 MSE를 계산하겠습니다, 배웠다시피 MSE는 실댔값과 예측값의
+차이에 대한 계산입니다, 여기에서의 실젯값은 y값이 되고, 예즉값은 오른쪽 노드에서 y의 명균이
+됩니다.
+
+• 우선 y의평균을 구합니다:3
+
+• 명균과각값의차를구합니다:0-3 = -3.6-3 = 3
+
+• 위의값에 대한 제곰 후 합을 구합니다 : -32 +3나 18
+
+• 위의 값을 관측치 개수만큼 나누어즘니다 : 18/2。9
+
+이와 같은 방식으로 MSE를 구하며, 3정 트리 회귀는 가장 낮은 MSE값이 나오도록 노드들 분류해나갑니
+다. MSE는 사이킷런의 결정 트리 모델에서 기본값으로 설정된 평가 기준이고, 필요에 따라 매개
+변수를                                                            이용하여 MSE대신 MAE나 Poisson 등으로 설정할 수도 
+있습니다,,
+
+08창 걸정■리 277
+
+
+8.7 오버피팅 문제
+
+결정 트리는 최대한 정확하게 분류해내기까지 수많은 가지를 뻗어나갈 수 있습니다, 각 마지막 노
+
+드에 1 개의 관측치반 둘어갈 정도로 세밀하게 분류해냈다면 100%의 정확도로 분류가 가능할 것
+인데. 매우 정확해 보이지만 이런 모델을 ♦은 모밸이라고 말하기는 어렵습니다. 우리가 훈련셋을
+사용히며 지나치게 깊은 트리 모델을 만푿면. 시험셋에 대한 예측은 오히려 떤어지는 경향이 있습
+
+니다. 이 문제는 비단 결정 트리에서반의 문제가 아니라, 모든 머신러닝 모델에서 발생하는 문제
+입니다. 아쾌의 그림을 예로 들어 설명 하겠습니다.
+
+독립변수가 1 개인 데이터이고. 위의 파란 점돌은 훈련셋의 데이터입니다, 반약 위의 데이터를 가
+지고 아주 정확한 예측 모델을 만든다년 아래의 같은 발간 곡선 형태가 예측값이 될 겁니다，
+
+그럼 이 예측 모델을 가지고 시험셋을 예측하면 어떻게 되는지도 보겠습니다.
+
+278 2단계 답용압려쥐Of 학숍하는 지£ a많앙교라g
+
+
+:
+
+■
+
+위 그래프에서의 노란색 원들은 시험셋의 데이터이고 녹색 점선은 예측치와의 실젯값 사이의 오
+차를 의 미합니다. 예측 모델이 훈련셋을 지나치게 잘 예측한다면 위와 같이 새로운 데이터를 예측
+할 때 큰 오차를 유발할 수 있습니다. 이러한 상황을 바로 오버피 팅어비이쌔 대뻐이라고 합니다,
+
+현실 데이터에는 어느 정도의 오차 범위가 있고 때로는 아웃라이어도 있기 때문에. 훈련셋에 아주
+딱 떨어지는 예측 모엘을 만드는 것보다는 어느 정도 두루몽실한 수준으로 예측하는 것이 오히 려
+새로운 데이터 예측에는 더 # 수도 있습니다. 이번에는 동일한 훈련셋으로 만든 아주 단순한
+예측 모델을 살펴뽑시다，
+
+
+직선으로 예측하는 모델입 니 다. 시 헌셋의 실 챗값과 예측 모델에서
+상당한                                       오차가 발생합니다，이러한 경우를 언더피팅이라고 합니
+
+다. 오버피팅과 언더피팅은 모두 피해야 하는 문제이며. 언더피팅
+이                                       더 안 좋은 모델이라 볼 수 있습니다. 시험셋의 예측이 상대적
+으로 괜찮다고 해도 훈련셋조차 제대로 예측하지 못한다면 그 결
+
+언더피팅 Umderfittino》
+과소적합이라고도 하여. 모델이
+충분히 학습되지 않아 훈련셋에
+
+대해서도 좋은 예측력을 내지
+못하는 상황
+
+과를 신뢰하기가 어렵기 때문입니다, 따라서 언더피팅은 무조건 피해야 하며. 데이터와 모델이 팬
+
+的장 3정■리 279
+
+
+찮다면 잘 발생하지도 않습니다, 반면 오버피팅은 머신러님 알고리즘이 뷰잡해짐에 따라 빈빈하
+게 발생하며. 완전한 해결도 어렵습니다, 그래서 오버피팅을 완전히 피한다기보다는 줄여나간다
+는 개념으로 접근하는 것이 총습니다.
+
+그럼 오버피팅과 언더피 팅을 해결한 예시도 보겠습니다,
+
+이렇게 너무 과하지도 부족하지도 않은 수준의 예측 모델을 만들어서 훈런셋과 시험셋 모두에서
+
+적절한 수준의 오차를 가져가는 형태가 좋은 모엘입 니다. 따라서 훈련셋을 지나치게 잘 예측하는
+모델의                                                           정확도를 일부러 낮춰 오버피팅을 예방할 필요가 있습니다.
+
+이 러 한 상 황 을 설 명 하 는 개 념 으 로 편 향 _ 분 산 트 레 이 드 오 프 매 이 에 세 f 가 있 습 니 다 , 우 선 편
+항은 독립변수와 종속변수를 모엘링한 알고리즘이 적절치 못하거나 중요한 부분을 놓쳐서 제대로
+된 예측을 하지 못할 때 높아집니다. 예를 들어 앞에서 봤던 언더피팅 예시가 편향이 높은 상황입
+니다、반면 분산은 훈련셋에 있는 데이터의 노이즈에 의해 발생하는 오차입니다, 에를듈어 앞서
+
+살펴본 오버피팅은 알고리줌이 훈련셋을 시나치게 짐확하게 따라가면서 모든 노이즈를 모델에 포
+
+함해 높은 분산이 발생할 수 있습니다. 즉 높은 편향는 언더피팅 문제를, 높은 분산은 오버피팅을
+문제를 불러을 수 있습니다. 가장 이상적이 게는 편향과 분산 모두가 낮은 모델이 겠지만, 현실에서
+는 기대하기 어렵습니다，현실에서는 아래 그래끄와 같은 형태를 띄는 것이 일반적입니다，
+
+280 2단체 답® 앙려휘아학지도 학含 앙2리중
+
+
+오류       언더피팅 영역
+
+A
+
+내
+하
+
+IH며r
+
+머
+
+때
+유
+학
+
+|
+
+?
+
+오베L| 딩 영역
+
+오# 합게
+
+편항
+
+* 모델복잡도
+
+분산이 낮으면 편향이 올라가게 되고. 반대로 편향이 낮아질수록 분산이 울라갑니다. 이 각 오차
+들의 합이 전체 모델의 에러가 되기 때문에 이 둘의 합이 가장 낮은 중간 지정이 우리가 찾아야 할
+최적점입니다, 이를 두고 편향-분산 트레이드오프라 하며. 그래프에서 우측이 오버피팅, 왼쪽이
+언더피팅입니다.
+
+8.8 매개변수 튜닝
+
+결정 트리에서는 트리 깊이가 깊어 진수록, 즉 수없이 많은 노드를 분류하여 모멜을 만둘수록 오버
+피팅 발생 가능성이 높습니다. 이 문제를 해결할 목적으로 결정 트리에서는 트리의 깊이를 제한
+하는 매개변수를 제공합니다. 기본값이 None이므로 매개변수를 지정해주지 않으면 최대한 깊은
+수준으로 트리를 반&어법니다, 우선 기본값으로 다시 모델림하고, 훈련셋과 시험셋 각 정확도를
+살펴보겠습니다，
+
+model = DecisionTreeClassifier() # 오및 객체 생성
+
+modeLfit(X_trainJ y_train) # 학습
+
+trainjpred = model.predict(X_train) ff 훈련셋 예측
+
+testjpred ■ modeLpredict(X_test) 律 시험셋 여■측
+
+print( Train score: , accuracy_score(y_train, t「ain，pred), Test score: f
+
+accuracy.scorefy.test, test_pred))                  !. 익 기 이노 기 사
+
+Train score: 0.9780242279474493 Test score: 0.8155806930439679
+
+明창 2정■러 281
+
+
+훈련셋에서 정확도(Train score)는 약 0,98. 시험셋에서 정확도(Test score)는 약 0.81 입니다,
+훈련셋에서는 정확도가 매우 높지반 시험셋에서는 상대적으로 낮은 수준입 니다, 이 정도의 격차라
+연 오버피팅이 발생했다고 볼 수 있고. 이 둘의 격차를 낮추면서 시험셋에서 정확도를 올리는 방
+향으로 매개변수를 설정해보겠습니다. 트리의 깊이를 지 정하는 매개변수는 maxjdepdi입니다,
+우선 5로 지정하여 결과를 보겠습니다.
+
+model = DecisionTreeClassifier(max_depth=5) 유 보 :.     !체
+
+modeLfit(X_trainJ y_train) * 학습
+
+train_pred = modeLpredict(X_train) # 훈련셋 예측
+
+testjred = model>predict(X_test)       * 시S셋 예측
+
+print('Train score:', accuracy_score(y_train> train_pred), 1 Test score:.,
+accuracy_score(y_test, test_pred)) 냐 ：으:?¹:： ; 으 험 넷 '1          ' 노 '
+
+Train score: 0.8540180856509129 Test score： 0.8499769667809797
+
+앞선 결과보다 Train score가 확 낮아졌고 Test score는 살짝 을라갔습니다. 둘 사이의 차이는
+매우                                                        낮아졌습니다. 마지막으로 7로 변경하여 한 빈 더 테스트하겠습니다，
+
+model = DecisionTreeClassifier(max^deptIw7) # 生엘 객체 생성
+
+modeltrain, y_train) # 학습
+
+train_pred = model.p「edict(X_train) # 훈련셋 예촉
+
+testj)red ■ modeLpredict(X_test) # 시험셋 예측
+
+print("Train   score:   ,   accuracy_score(y_train,   train^pred),   Test   score:   ,
+dccuracy_score(y_testf te5t_pred)) # 훈引셋『 시험셋의 정盡1도 평가
+
+Train score: 0.8598532673605187 Test score： 0*8542765009981061
+
+위의 결과와 거의 비슷하지만 전반적으로 조금 더 정확해졌습니다，이상적인 max_depth의 값
+은 주어진 데이터에 따라서 다르기 때문에 직접 다양한 시도를 하면서 오버피팅을 낮추는 노력을
+해야                                                            합니다.
+
+8.9 트리 그래프
+
+8. 6절 끼해하기 : 결정 트라에서 다룬 예시를 그래프로 그려봅시다. 이 그래프는 다른 그래프&
+
+282 2단제 답S 앙러주I야 학含하fe 지도 박f 망고리h
+
+
+과 다르게 맷플롯립이나 시본이 아닌, 사이깃런의 tree 안에서 불러옵니다,
+
+from sklearn.tree import plot .tree 이포트
+plt.figureffigsize^U。15))   #   O   그래프   크기   설정
+plot_tree(model) # O 트리 그래프 출력
+
+plt.stm_(》       « O 署■요한 문자가 나오지 않게 출력
+
+O 그래프 크기를 조정합니다. figsize에 입력되는 두 값은 각각 가로, 세로 길이입니다. 단위는
+인치입니다. 0 plotjree 안에 위에서 훈련시킨 모델의 이름을 넣어주면 그래프를 그립니다, O
+안 써도 상관없으나. 불필요한 텍스트돝까지 아웃풋으로 출력되는 걸 원하지 않는다연 가급적 사
+품하기 바람니다.
+
+이 모델은 우리가 마지막에 훈련시킨 max_depth 7의 결과물입니다，7으로 제한했음에도 너무
+거대한 트리라서 내용올 확인할 수 없을 정도로 작게 표현되었습니다，따라서 이 트리의 전체를
+
+보기보다는 중요하다고 여겨지는 윗 부분(5단계까지)만을 확대해서 보겠습니다. 그 밖에 폰트 크
+기를 조정 하는 매 개변수도 추가하겠습니다.
+
+plt + figure(figsize=(30, 15)) # 그래프 크기 지정
+
+plot.treetmodeL  ■ax_depth=3J  fontsize=15)  상  강이와  폰i  크기  조정하여  I리  그래프  출력
+
+pU.show() # 물필요한 문자가 나오지 않게 출력
+
+08장 2업토리 283
+
+
+O
+
+머바 • ■ Kl
+
+, J着■화
+
+■ \2nm MBJ
+
+
+*H  *
+
+0■ 1n1*-*^4，)4Mq，M_4l|i| 4_- IMWS  0
+
+的gw，•
+
+
+_7*T■ TV TV
+2L  '乂    ■ _
+
+이 부분도 매개변수를 통해서 원래 변수 이름으로 바꿔보겠습니 다.
+
+plt.figure(figsize】(30> 15)) 그이프 크시 .시?—
+
+V4k>« -
+
+JJMI
+
+plot_treefmodelj max_depth= fontsize=15J
+
+feature_names=X_train.columns) # 0 변수 이■콜 추가하여 그레프 출력
+
+plt.show<) # 불51요한 문자가 나오지 않게 출력
+
+
+■醫h • 學
+
+i#eut4 S
+
+AlienHPun «. I著，
+f_□<N44
+
+• IMV
+
+버WMI
+
+O  feature_narnes  매개변수에  변수  이름이  담긴  리스트를  입러합니다.  X_train,cokmnns를
+활용하면                                                            간단하게 변수 이름을 불러 올 수 있습니다，
+
+284 2단？II 답보 앙려취야 학玄하는 지도 마合 압고리 S
+
+
+O 첫 번째 노드에는 분류 기준. 지니 인덱스(바미). 총 데이터 수(samples)가 표시됩니다, value
+는 목풋값 0과 1이 각각 몇 개씩인지를 보여줌니다, 분류 기준인 첫 줄에서는 marital-status.
+
+Married-civ-spouse £ 0,5를 기준으로 나누었습니다, 해당 변수는 기존 marita卜status에
+서 더미 변수로 파생된 것으로. 혼인 상태가 Married-civ-spouse°ll 해당하는지 아닌지가 가장
+중요한 변수로 꼽혔습니다, 노드의 분류는 조건에 맞으면 원유_ 아니 면 오른쪽으로 분류되는데,
+여기에서는 왼쪽으로 뻗은 노드가 Married-civ-spouse에 해당하지 많는 경우가 되겠습니다.
+
+€> 두 빈째 노드의 지니 인덱스는 0.12로 꽤 많이 낮아졌고, value를 보면 0인 경우가 훨씬 많도
+록 분류되었습니다, 이와 같이 트리 그래프를 해석할 수 있으며, 이는 비전문가에게도 설명이 용
+이하기I 때문에 유유하게 사용됩니다.
+
+학습 마무리
+
+학력. 교육 연수. 혼인 상태. 직업를 담은 연봉 데이터셋을 이용해 연봉을 예측하는 모델을 만들어
+보았습니다. 이 과정을 되짚어보겠습니다,
+
+나이. 교육연수. 가족관계      판다스, 넘파이. 앳플롯       더미 변수로 변환하고_ 범!      결정 트리들 사용해 예
+
+
+등의 다앙한
+하여 연봉을
+
+변수료 사용
+예측하는 모
+
+립, 시본 라이브리리墨임
+
+포 료 « 會니 다 . 프 로 책 토
+
+주 별 종 속 변 수 의 평 균 값
+을 치환해 범주형 네이터
+
+측 모델을 만든 결과, 약
+
+81%익 정확도몰 믿었습
+
+
+델을 안들어 i§니다.
+
+8J 문세정의
+
+에 쓸 예체 네이터셋올 콜
+
+러옵니다.
+
+1
+
+1    8 . 2 라 이 브 러 리 및 |
+
+―► 데이터 불러오기 &
+
+데이터 확인하기
+
+플 전처리했습니다.
+
+전처리
+
+니다.
+
+8.5 모델링 및
+예측하기
+
+                  ■'                  많
+
+
+결측치률 특정값으로 치환하는 방S으로 처
+리했습니디, 아직까지 남아있는 범주형 데
+
+이ᅵ터률 더미 변수로 변환해주었참니다,
+
+병주형 데이터
+
+8.4 g외치 처리 및 더미 변수 변한
+
+0S장 3정■리 285
+
+
+•ruuive-c이intr/를 다양한 방법으로 처리하여 결과를 비교해봅시다. 8,3절에 소개된 방법을
+이용해도 좋고. 더미 변수를 사용하여 수많은 걸엄으로 반풀■어도 좋습니다. 4장에서 사용한 타이
+타닉 데이터를 결정 트리로 모델링해봅시다.
+
+繼■ id러•
+
+1 결정 트리 : 트리 모델의 가장 기본 형태입니다. 데이터의 특성을 고려하여 데이터를 분류해나
+가는 방식입니다.
+
+2 지니 인덱스와 교체 엔트로피 : 노드의 순도를 평가하는 방법. 노드의 순도가 높을수록 지니 및 엔
+
+트로피 값은 낮아집 니다.
+
+3 오버피팅 : 모델이 학습셋에 지나치게 잘 맞도록 학습되어서 새로운 데이터에 대한 예촉력이
+떨어지는 현상을 의미합니다.
+
+4 언더피팅 : 과소적합이라고도 하며. 모델이 층분히 학습되지 않아 훈련셋에 대해서도 좋은 예
+
+측력을 내 지 못하는 상황입니다,
+
+새  합今와라이보러리
+
+■ mcias.DataFram merpeO : 두 개의 데이터프레임을 합침 니다.
+
+•  paixfas.Oat i reset_index() : 판다스 데이터 프레임과 시리즈에서 인덱스에 들어 있는
+정보를 별도의 걸럼으로 배옵니다,
+
+， ，i3s._Fr i renamed) : 데이터프레임의 컬럼이나 인덱스 이름을 변경할 수 있습니다.
+
+• pand的.DfftaFwne.sdvalu여 ) : 데이터를 특정 컬럼 기준 오름차순 흑은 내림차순으로 정
+렬합니다.
+
+286 2단71 답포 앙려쉬야 하손하는 자도 학은 망고라S
+
+
+3 습 문제
+
+1 다음 중 범주형 데이터의 결측치를 처리하는 방법으로 옮시 많은 것은?
+
+O 특징 값이 압도적으로 많이 등장할 경우，해당값으로 결촉치를 대체할 수 있다,
+
+O 경우에 따라 임의의 텍스트(unknown) 등으로 대체할 수 있다.
+
+O 폄균값으로 결측치를 대체하는 것이 가장 무난하다.
+
+O 결측치가 많지 않으면 결측치 행을 제거할 수 있다.
+
+2 다몸 중 분류를 위한 결정트리가 노드를 분류할 때 사용하는 기준은?
+
+O 지니 인덱스
+公 RMSE
+OR'
+
+O 사후확률
+
+3 다음 중 오버피팅에 대한 설영으로 옮지 않은 것은?
+
+©모델이 학습 데이터에 지나치게 편향적으로 예촉할 경우 발생한다.
+
+G 반대 개념으로 언더피명이 있다.
+
+O 오버피팅보다는 언더피팅이 발생하는 것이 더 나은 모델이다，
+
+O 모델의 학습을 의도적으로 제한하여 오버피팅을 줄일 수 있다，
+
+0B창 ■정트리 287
+
+
+1 정답 分 평균값으로 결축차■ 대체하는 것이 가장 무난하다,
+해성 병주형 데이터메서는 평균값을 구창 수가 없큔내4.
+
+z 현 O
+
+해설 0지니인액스
+
+公 RMSE  — 면속험 변수 예족의 평가지표입니다.
+
+OR      — 선형 회귀 S석의 평가자S입니다.
+
+O 사후 학본 ᅳ 사건 A와 B가 있뷴 때，사건 A기 발생현 상환예서 사건 B 가 발생밥 화료로 i 나이브에이즈 일
+고리증에서 사§§니다.
+
+3^0 오베IJ 8보다는 언데1J팅이 발생하는 것이 더나은 모델이다,
+
+애석 오버피팅P 학습이 지나치게 침되어서 군제인 반면, 언데디팅은 학合이 애초에 참 되지 않P 것이므로 여데II팅
+이더안®은상훤임!■! 다,
+
+288 2단제 답용 암격러야 마습하는 지t 학合 앙고리끊
+
